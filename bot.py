@@ -16,13 +16,19 @@ Webhook path is '/webhook', therefore:
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'photo':
-        print(msg['caption'], msg['caption'] is '', len(msg['caption']))
-        file = BytesIO()
-        bot.download_file(msg['photo'][-1]['file_id'], file)
-        file.seek(0)
-        face = Image.open(file)
-        result = draw(face, 'альби петушкевич', 12, 2000, 0)
-        bot.sendPhoto(chat_id, result)
+        try:
+            char = msg['caption'].split('.')
+            file = BytesIO()
+            bot.download_file(msg['photo'][-1]['file_id'], file)
+            file.seek(0)
+            face = Image.open(file)
+            result = draw(face, char[0], char[1], char[2], char[3])
+            bot.sendPhoto(chat_id, result)
+        except KeyError:
+            bot.sendMessage(chat_id, "🚫Ты не добавил описания (т.е. подписи к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
+        except IndexError:
+            bot.sendMessage(chat_id, "🚫Неправильное описание (т.е. подпись к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
+        
     print('Chat Message:', content_type, chat_type, chat_id)
 
 
