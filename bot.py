@@ -19,7 +19,7 @@ def on_chat_message(msg):
         file = BytesIO()
         bot.download_file(msg['photo'][0]['file_id'], file)
         file.seek(0)
-        face = Image(file, mode='b')
+        face = Image.open(file, mode='b')
         draw(face, 'альби петушкевич', 12, 2000, 0)
     print('Chat Message:', content_type, chat_type, chat_id)
 
