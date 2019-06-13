@@ -13,13 +13,10 @@ REVROUBLE = Image.open('fonts/revenue/rouble.png')
 
 
 for i in range(0,10):
-	image = Image.open('fonts/start/' + str(i) + '.png')
-	STARTDIGITS.update({i:image})
-
-for i in range(0,10):
-	image = Image.open('fonts/revenue/' + str(i) + '.png')
-	REVDIGITS.update({i:image})
-
+	startimg = Image.open('fonts/start/' + str(i) + '.png')
+	STARTDIGITS.update({i:startimg})
+	revimg = Image.open('fonts/revenue/' + str(i) + '.png')
+	REVDIGITS.update({i:revimg})
 
 def rev(string):
 	if type(string) is not str:
