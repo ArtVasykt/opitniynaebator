@@ -17,9 +17,9 @@ def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'photo':
         file = BytesIO()
-        bot.download_file(msg['photo'][0]['file_id'], file)
+        bot.download_file(msg['photo'][-1]['file_id'], file)
         file.seek(0)
-        #face = Image.open(file).resize(380, 380)
+        #face = Image.open(file)
         bot.sendPhoto(chat_id, ('экз.png', file))
         #result = draw(face, 'альби петушкевич', 12, 2000, 0)
         #bot.sendPhoto(chat_id, ('хуй.png', result))
