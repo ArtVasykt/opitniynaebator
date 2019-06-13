@@ -13,7 +13,7 @@ Webhook path is '/webhook', therefore:
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'photo':
-        print('id: {0}'.format(msg['photo'][0]['file_id']))
+        bot.sendPhoto(chat_id, msg['photo'][0]['file_id'])
     print('Chat Message:', content_type, chat_type, chat_id)
 
 
