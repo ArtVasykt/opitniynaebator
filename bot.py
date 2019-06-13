@@ -12,8 +12,10 @@ Webhook path is '/webhook', therefore:
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-    bot.sendMessage(chat_id, "Шел бы ты своей дорогой...")
+    if content_type == 'photo':
+        print('id: {0}'.format(msg['photo'][0]['file_id']))
     print('Chat Message:', content_type, chat_type, chat_id)
+
 
 def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
