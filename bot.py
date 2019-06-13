@@ -19,22 +19,6 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
 
-# need `/setinline`
-def on_inline_query(msg):
-    query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
-    print('Inline Query:', query_id, from_id, query_string)
-
-    # Compose your own answers
-    articles = [{'type': 'article',
-                    'id': 'abc', 'title': 'ABC', 'message_text': 'Good morning'}]
-
-    bot.answerInlineQuery(query_id, articles)
-
-# need `/setinlinefeedback`
-def on_chosen_inline_result(msg):
-    result_id, from_id, query_string = telepot.glance(msg, flavor='chosen_inline_result')
-    print('Chosen Inline Result:', result_id, from_id, query_string)
-
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
@@ -42,11 +26,9 @@ URL = 'https://opitniynaebator.herokuapp.com/'
 app = Flask(__name__)
 bot = telepot.Bot(TOKEN)
 webhook = OrderedWebhook(bot, {'chat': on_chat_message,
-                               'callback_query': on_callback_query,
-                               'inline_query': on_inline_query,
-                               'chosen_inline_result': on_chosen_inline_result})
+                               'callback_query': on_callback_query})
 
-@app.route('/webhook', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def pass_update():
     webhook.feed(request.data)
     return 'OK'
