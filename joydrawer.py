@@ -55,8 +55,7 @@ def small(amount):
 def draw(minimal, maximal):
 	template = Image.open('joy_template.png')
 	amount = random.randint(minimal, maximal)
-	amount = str(amount)
-	amount = ':,'.format(amount)
+	amount = '{:,}'.format(amount)
 	bigd = big(amount)
 	smalld = small(amount)
 	template.paste(bigd, box=(BIG_CORNER - bigd.width, BIG_VERT), mask=bigd)
