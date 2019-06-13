@@ -21,7 +21,7 @@ def on_chat_message(msg):
         file.seek(0)
         face = Image.open(file)
         result = draw(face, 'альби петушкевич', 12, 2000, 0)
-        bot.sendPhoto(chat_id, ('хуй.png', result))
+        bot.sendPhoto(chat_id, result)
     print('Chat Message:', content_type, chat_type, chat_id)
 
 
