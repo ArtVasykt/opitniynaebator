@@ -3,6 +3,9 @@ import os
 from flask import Flask, request
 import telepot
 from telepot.loop import OrderedWebhook
+from result_drawer import draw
+from io import BytesIO
+from PIL import Image
 
 """
 $ python2.7 flask_skeleton.py <token> <listening_port> <webhook_url>
@@ -13,7 +16,11 @@ Webhook path is '/webhook', therefore:
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'photo':
-        bot.sendPhoto(chat_id, msg['photo'][0]['file_id'])
+        file = BytesIO()
+        bot.download_file(msg['photo'][0]['file_id'], file)
+        file.seek(0)
+        face = Image(file, mode='b')
+        draw(face, 'альби петушкевич', 12, 2000, 0)
     print('Chat Message:', content_type, chat_type, chat_id)
 
 
