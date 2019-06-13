@@ -59,10 +59,8 @@ def draw(minimal, maximal):
 	amount = ','.join(amount[i:i+3] for i in range(0, len(amount), 3))
 	bigd = big(amount)
 	smalld = small(amount)
-	print(bigd.size)
-	print(smalld.size)
-	template.paste(bigd, box=(bigd.width - BIG_CORNER, BIG_VERT), mask=bigd)
-	template.paste(smalld, box=(smalld.width - SMALL_CORNER, SMALL_VERT), mask=smalld)
+	template.paste(bigd, box=(BIG_CORNER - bigd.width, BIG_VERT), mask=bigd)
+	template.paste(smalld, box=(SMALL_CORNER - smalld.width, SMALL_VERT), mask=smalld)
 
 	output = BytesIO()
 	template.save(output, format='PNG')
