@@ -19,10 +19,9 @@ def on_chat_message(msg):
         file = BytesIO()
         bot.download_file(msg['photo'][-1]['file_id'], file)
         file.seek(0)
-        #face = Image.open(file)
-        bot.sendPhoto(chat_id, ('экз.png', file))
-        #result = draw(face, 'альби петушкевич', 12, 2000, 0)
-        #bot.sendPhoto(chat_id, ('хуй.png', result))
+        face = Image.open(file)
+        result = draw(face, 'альби петушкевич', 12, 2000, 0)
+        bot.sendPhoto(chat_id, ('хуй.png', result))
     print('Chat Message:', content_type, chat_type, chat_id)
 
 
