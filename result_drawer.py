@@ -66,6 +66,8 @@ def draw(face, name, age, start, revenue, debug=False):
 		face = Image.open(EXAMPLEFACE)
 	face.resize((380,380))
 	mask = Image.open('facemask.png') # Круглость
+	print(mask.size, mask.mode)
+	print(face.size, face.mode)
 	template.paste(face, box=(68, 197), mask=mask)
 
 	draw = ImageDraw.Draw(template)
