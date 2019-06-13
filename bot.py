@@ -54,7 +54,7 @@ def on_callback_query(msg):
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
     if data[0] == 'generate_balance':
-        balance = joydrawer.draw(int(data[1]), int(data[1]) - 100)
+        balance = joydrawer.draw(int(data[1])- 100, int(data[1]))
         bot.sendPhoto(from_id, balance)
 
 
