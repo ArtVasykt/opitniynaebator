@@ -76,6 +76,7 @@ def draw(face, name, age, start, revenue, debug=False):
 	w, h = helb.getsize(name.upper())
 	draw.text((((RES/2)-w)/2, 628.7), name.upper(), font=helb) # NAME
 	# AGE
+	age = str(age)
 	age += ' лет'
 	hell = ImageFont.truetype('HelveticaNeueCyr-Light.ttf', 28)
 	w, h = hell.getsize(age)
