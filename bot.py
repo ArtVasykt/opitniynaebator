@@ -24,8 +24,7 @@ def on_chat_message(msg):
         if chat_id not in logged_users:
             bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
             logging_in.append(chat_id)
-        else:
-
+            
     if content_type == 'photo' and chat_id in logged_users:
         try:
             char = msg['caption'].split('.')
