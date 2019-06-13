@@ -1,4 +1,5 @@
 import sys
+import os
 from flask import Flask, request
 import telepot
 from telepot.loop import OrderedWebhook
@@ -35,9 +36,8 @@ def on_chosen_inline_result(msg):
     print('Chosen Inline Result:', result_id, from_id, query_string)
 
 
-TOKEN = sys.argv[1]
-PORT = int(sys.argv[2])
-URL = sys.argv[3]
+TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
+URL = 'https://opitniynaebator.herokuapp.com/'
 
 app = Flask(__name__)
 bot = telepot.Bot(TOKEN)
@@ -59,4 +59,4 @@ if __name__ == '__main__':
         pass
 
     webhook.run_as_thread()
-    app.run(port=PORT, debug=True)
+    app.run(port=int(os.environ.get('PORT', 5000)), debug=True)
