@@ -56,6 +56,7 @@ def on_callback_query(msg):
     if data[0] == 'generate_balance':
         balance = joydrawer.draw(int(data[1])- 100, int(data[1]))
         bot.sendPhoto(from_id, balance)
+        bot.answerCallbackQuery(query_id, 'Ща все будет')
 
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
