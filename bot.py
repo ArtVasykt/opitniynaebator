@@ -20,11 +20,17 @@ PASSWORD = 'pasha_lox'
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-    if msg['text'] == '/start':
-        if chat_id not in logged_users:
-            bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
-            logging_in.append(chat_id)
-            
+    if content_type == 'text':
+        if msg['text'] == '/start':
+            if chat_id not in logged_users:
+                bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
+                logging_in.append(chat_id)
+        elif chat_id in logging_in:
+            if msg['text'].lower() == PASSWORD:
+                logged_users.append(chat_id)
+                logging_in.remove(chat_id)
+                bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
+
     if content_type == 'photo' and chat_id in logged_users:
         try:
             char = msg['caption'].split('.')
@@ -39,11 +45,6 @@ def on_chat_message(msg):
             bot.sendMessage(chat_id, "🚫Ты не добавил описания (т.е. подписи к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
         except IndexError:
             bot.sendMessage(chat_id, "🚫Неправильное описание (т.е. подпись к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
-    elif chat_id in logging_in:
-        if msg['text'].lower() == PASSWORD:
-            logged_users.append(chat_id)
-            logging_in.remove(chat_id)
-            bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
         
     print('Chat Message:', content_type, chat_type, chat_id)
 
