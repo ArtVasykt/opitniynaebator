@@ -64,7 +64,7 @@ def draw(face, name, age, start, revenue, debug=False):
 	# x: 68 y: 197
 	if debug:
 		face = Image.open(EXAMPLEFACE)
-	face.resize((380,380))
+	face = face.resize((380,380))
 	mask = Image.open('facemask.png') # Круглость
 	print(mask.size, mask.mode)
 	print(face.size, face.mode)
