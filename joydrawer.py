@@ -43,7 +43,7 @@ def small(amount):
 	x = 0
 	# Calculate width of image
 	for number in amount:
-		imgwidth += SMALLDIGITS[number] + spacing
+		imgwidth += SMALLDIGITS[number].width + spacing
 	canvas = Image.new('RGBA', (imgwidth, imgheight))
 	# Draw
 	for number in amount:
