@@ -12,13 +12,13 @@ BIGDIGITS = {}
 SMALLDIGITS = {}
 
 for i in range(0, 10):
-	bigimg = Image.open('fonts/joybig/' + str(i) + '.PNG')
+	bigimg = Image.open('fonts/joybig/' + str(i) + '.png')
 	BIGDIGITS.update({str(i):bigimg})
-	smallimg = Image.open('fonts/joysmall/' + str(i) + '.PNG')
+	smallimg = Image.open('fonts/joysmall/' + str(i) + '.png')
 	SMALLDIGITS.update({str(i):smallimg})
 
-BIGDIGITS.update({',': Image.open('fonts/joybig/,.PNG')})
-SMALLDIGITS.update({',': Image.open('fonts/joysmall/,.PNG')})
+BIGDIGITS.update({',': Image.open('fonts/joybig/,.png')})
+SMALLDIGITS.update({',': Image.open('fonts/joysmall/,.png')})
 
 def big(amount):
 	imgwidth = 0
