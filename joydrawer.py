@@ -23,7 +23,7 @@ SMALLDIGITS.update({',': Image.open('fonts/joysmall/,.png')})
 def big(amount):
 	imgwidth = 0
 	imgheight = 10
-	spacing = 4
+	spacing = 0
 	x = 0
 	# Calculate width of image
 	for number in amount:
@@ -39,7 +39,7 @@ def big(amount):
 def small(amount):
 	imgwidth = 0
 	imgheight = 7
-	spacing = 2
+	spacing = 0
 	x = 0
 	# Calculate width of image
 	for number in amount:
