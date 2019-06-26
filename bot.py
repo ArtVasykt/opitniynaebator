@@ -5,6 +5,7 @@ import telepot
 from telepot.loop import OrderedWebhook
 from result_drawer import draw
 import joydrawer
+import sberdrawer
 from io import BytesIO
 from PIL import Image
 from telepot.namedtuple import ReplyKeyboardMarkup, InlineKeyboardMarkup
@@ -16,22 +17,42 @@ Webhook path is '/webhook', therefore:
 """
 logged_users = []
 logging_in = []
-PASSWORD = 'pasha_lox'
+result_query = []
+sberbank_query = []
+PASSWORD = 'артем крутой'
+admins = ['474504117', 474504117]
+
+def adminka(chat_id):
+    bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        [dict(text='Результаты Айсены😍', callback_data='result.generate')],
+        [dict(text='Сбербанк💳', callback_data='sberbank.generate')]]))
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'text':
         if msg['text'] == '/start':
             if chat_id not in logged_users:
-                bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
-                logging_in.append(chat_id)
+                if chat_id in admins:
+                    logged_users.append(chat_id)
+                    adminka(chat_id)
+                else:
+                    bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
+                    logging_in.append(chat_id)
         elif chat_id in logging_in:
             if msg['text'].lower() == PASSWORD:
                 logged_users.append(chat_id)
                 logging_in.remove(chat_id)
                 bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
+        if chat_id in sberbank_query:
+            try:
+                numbers = msg['text'].split('.')
+                bot.sendPhoto(sberdrawer.draw(numbers[0], numbers[1]))
+            except Exception as e:
+                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
+            sberbank_query.remove(chat_id)
+            adminka(chat_id)
 
-    if content_type == 'photo' and chat_id in logged_users:
+    if content_type == 'photo' and chat_id in logged_users and chat_id in result_query:
         try:
             char = msg['caption'].split('.')
             file = BytesIO()
@@ -40,7 +61,8 @@ def on_chat_message(msg):
             face = Image.open(file)
             result = draw(face, char[0], char[1], char[2], char[3])
             bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [dict(text='Сгенерировать баланс 🎻', callback_data='generate_balance.{0}'.format(char[3]))]]))
+                [dict(text='Сгенерировать баланс 🎻', callback_data='result.generate_balance.{0}'.format(char[3]))],
+                [dict(text='Назад🔙', callback_data='result.back')]]))
         except KeyError:
             bot.sendMessage(chat_id, "🚫Ты не добавил описания (т.е. подписи к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
         except IndexError:
@@ -53,10 +75,24 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
-    if data[0] == 'generate_balance':
-        bot.answerCallbackQuery(query_id, 'Ща все будет')
-        balance = joydrawer.draw(int(data[1])- 100, int(data[1]))
-        bot.sendPhoto(from_id, balance)
+    if data[0] == 'result':
+        if data[1] == 'generate_balance':
+            bot.answerCallbackQuery(query_id, 'Ща все будет')
+            balance = joydrawer.draw(int(data[2])- 100, int(data[1]))
+            bot.sendPhoto(from_id, balance)
+        elif data[1] == 'generate':
+            bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
+            result_query.append(from_id)
+            bot.sendMessage(from_id, 'Отправь фото с описанием.📷')
+        elif data[1] == 'back':
+            bot.answerCallbackQuery(query_id, 'OK')
+            result_query.remove(from_id)
+            adminka(from_id)
+    if data[0] == 'sberbank':
+        if data[1] == 'generate':
+            bot.answerCallbackQuery(query_id, 'OK')
+            sberbank_query.append(from_id)
+            bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
