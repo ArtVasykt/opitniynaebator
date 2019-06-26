@@ -23,6 +23,10 @@ PASSWORD = 'артем крутой'
 admins = ['474504117', 474504117]
 
 def adminka(chat_id):
+    if chat_id in result_query:
+        result_query.remove(chat_id)
+    if chat_id in sberbank_query:
+        sberbank_query.remove(chat_id)
     bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
         [dict(text='Результаты Айсены😍', callback_data='result.generate')],
         [dict(text='Сбербанк💳', callback_data='sberbank.generate')]]))
@@ -46,7 +50,7 @@ def on_chat_message(msg):
         if chat_id in sberbank_query:
             try:
                 numbers = msg['text'].split('.')
-                bot.sendPhoto(sberdrawer.draw(numbers[0], numbers[1]))
+                bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
             sberbank_query.remove(chat_id)
