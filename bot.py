@@ -64,7 +64,7 @@ def on_chat_message(msg):
             elif chat_id in joycasino_query:
                 try:
                     amount = int(msg['text'])
-                    bot.sendPhoto(joydrawer.draw(amount, amount))
+                    bot.sendPhoto(chat_id, joydrawer.draw(amount, amount))
                 except Exception as e:
                     bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
                 adminka(chat_id)
