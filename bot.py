@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 import telepot
 from telepot.loop import OrderedWebhook
-from result_drawer import draw
+import result_drawer
 import joydrawer
 import sberdrawer
 import random
@@ -52,27 +52,25 @@ def on_chat_message(msg):
                 bot.sendMessage(chat_id, '🚫Неверный пароль сука!')
 
         elif 'logged' in query[chat_id]:
-            try:
-                if msg['text'] == '/backnahoi':
-                    adminka(chat_id)
-                elif 'sberbank' in query[chat_id]:
-                    numbers = msg['text'].split('.')
-                    bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
-                    adminka(chat_id)
-                elif 'joycasino_amount' in query[chat_id]:
-                    amounts[chat_id] = msg['text']
-                    bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
-                    query[chat_id].remove('joycasino_amount')
-                    query[chat_id].append('joycasino_mail')
-                elif 'joycasino_mail' in query[chat_id]:
-                    print(amounts[chat_id])
-                    print(query)
-                    bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
-                    joycasino_query_mail.remove(chat_id)
-                    adminka(chat_id)
+            #try:
+            if msg['text'] == '/backnahoi':
+                adminka(chat_id)
+            elif 'sberbank' in query[chat_id]:
+                numbers = msg['text'].split('.')
+                bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
+                adminka(chat_id)
+            elif 'joycasino_amount' in query[chat_id]:
+                amounts[chat_id] = msg['text']
+                bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
+                query[chat_id].remove('joycasino_amount')
+                query[chat_id].append('joycasino_mail')
+            elif 'joycasino_mail' in query[chat_id]:
+                bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
+                joycasino_query_mail.remove(chat_id)
+                adminka(chat_id)
 
-            except Exception as e:
-                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
+            #except Exception as e:
+            #    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
             
 
     if content_type == 'photo' and 'result' in query[chat_id]:
@@ -82,7 +80,7 @@ def on_chat_message(msg):
             bot.download_file(msg['photo'][-1]['file_id'], file)
             file.seek(0)
             face = Image.open(file)
-            result = draw(face, char[0], char[1], char[2], char[3])
+            result = result_drawer.draw(face, char[0], char[1], char[2], char[3])
             bot.sendPhoto(chat_id, result)
         except KeyError:
             bot.sendMessage(chat_id, "🚫Ты не добавил описания (т.е. подписи к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
