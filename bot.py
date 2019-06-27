@@ -57,14 +57,14 @@ def on_chat_message(msg):
                     numbers = msg['text'].split('.')
                     bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
                 except Exception as e:
-                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e)
                 adminka(chat_id)
             elif chat_id in joycasino_query:
                 try:
                     amount = int(msg['text'])
                     bot.sendPhoto(joydrawer.draw(amount, amount))
                 except Exception as e:
-                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e)
                 adminka(chat_id)
 
     if content_type == 'photo' and chat_id in logged_users and chat_id in result_query:
