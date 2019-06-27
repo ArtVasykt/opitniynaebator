@@ -52,22 +52,23 @@ def on_chat_message(msg):
                 logging_in.remove(chat_id)
                 bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
         elif chat_id in logged_users:
-            if chat_id in sberbank_query:
+            if msg['text'] == '/backnahoi':
+                adminka(chat_id)
+            elif chat_id in sberbank_query:
                 try:
                     numbers = msg['text'].split('.')
                     bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
                 except Exception as e:
-                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e)
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
                 adminka(chat_id)
             elif chat_id in joycasino_query:
                 try:
                     amount = int(msg['text'])
                     bot.sendPhoto(joydrawer.draw(amount, amount))
                 except Exception as e:
-                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e)
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
                 adminka(chat_id)
-            elif msg['text'] == '/backnahoi':
-                adminka(chat_id)
+            
 
     if content_type == 'photo' and chat_id in logged_users and chat_id in result_query:
         try:
