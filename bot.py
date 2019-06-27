@@ -19,6 +19,7 @@ logged_users = []
 logging_in = []
 result_query = []
 sberbank_query = []
+joycasino_query = []
 PASSWORD = 'артем крутой'
 admins = ['474504117', 474504117]
 
@@ -27,9 +28,12 @@ def adminka(chat_id):
         result_query.remove(chat_id)
     if chat_id in sberbank_query:
         sberbank_query.remove(chat_id)
+    if chat_id in joycasino_query:
+        joycasino_query.remove(chat_id)
     bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
         [dict(text='Результаты Айсены😍', callback_data='result.generate')],
-        [dict(text='Сбербанк💳', callback_data='sberbank.generate')]]))
+        [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
+        [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate_prepare')]]))
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -47,14 +51,21 @@ def on_chat_message(msg):
                 logged_users.append(chat_id)
                 logging_in.remove(chat_id)
                 bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
-        if chat_id in sberbank_query:
-            try:
-                numbers = msg['text'].split('.')
-                bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
-            except Exception as e:
-                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
-            sberbank_query.remove(chat_id)
-            adminka(chat_id)
+        elif chat_id in logged_users:
+            if chat_id in sberbank_query:
+                try:
+                    numbers = msg['text'].split('.')
+                    bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
+                except Exception as e:
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
+                adminka(chat_id)
+            elif chat_id in joycasino_query:
+                try:
+                    amount = int(msg['text'])
+                    bot.sendPhoto(joydrawer.draw(amount, amount))
+                except Exception as e:
+                    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e.text)
+                adminka(chat_id)
 
     if content_type == 'photo' and chat_id in logged_users and chat_id in result_query:
         try:
@@ -82,7 +93,7 @@ def on_callback_query(msg):
     if data[0] == 'result':
         if data[1] == 'generate_balance':
             bot.answerCallbackQuery(query_id, 'Ща все будет')
-            balance = joydrawer.draw(int(data[2])- 100, int(data[1]))
+            balance = joydrawer.draw(int(data[2])- 100, int(data[2]))
             bot.sendPhoto(from_id, balance)
         elif data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
@@ -92,11 +103,16 @@ def on_callback_query(msg):
             bot.answerCallbackQuery(query_id, 'OK')
             result_query.remove(from_id)
             adminka(from_id)
-    if data[0] == 'sberbank':
+    elif data[0] == 'sberbank':
         if data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'OK')
             sberbank_query.append(from_id)
             bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
+    elif data[0] == 'joycasino':
+        if data[1] == 'generate_prepare':
+            bot.answerCallbackQuery(query_id, 'OK')
+            bot.sendMessage(from_id, 'Напиши сумму🤑')
+            joycasino_query.append(from_id)
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
