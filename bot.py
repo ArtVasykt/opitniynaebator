@@ -92,28 +92,35 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
-    if data[0] == 'result':
-        if data[1] == 'generate':
-            bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
-            query[from_id].append('result')
-            bot.sendMessage(from_id, 'Отправь фото с описанием.📷', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [dict(text='🤷‍♂️Как?', callback_data='result.tutor')]]))
-        elif data[1] == 'tutor':
-            bot.answerCallbackQuery(query_id, 'Ща все покажу расскажу')
-            bot.sendMessage(from_id, 'Ты должен мне прислать примерно вот такое изображение с подписью!')
-            bot.sendPhoto(from_id, 'https://i1.sndcdn.com/avatars-000338809424-572092-t500x500.jpg', caption='Сикснайн.69.1000.100000')
-            bot.sendMessage(from_id, 'Тогда ты получишь такую штуку👇')
-            bot.sendPhoto(from_id, 'AgADAgAD1qoxG8zHoUhT7UKEyRdyKoOBCA4ABKbxp6mlejJiP7gBAAEC')
-    elif data[0] == 'sberbank':
-        if data[1] == 'generate':
-            bot.answerCallbackQuery(query_id, 'OK')
-            query[from_id].append('sberbank')
-            bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
-    elif data[0] == 'joycasino':
-        if data[1] == 'generate':
-            bot.answerCallbackQuery(query_id, 'OK')
-            bot.sendMessage(from_id, 'Напиши сумму🤑')
-            query[from_id].append('joycasino_amount')
+    if from_id not in query:
+        if from_id in ADMINS:
+            query[from_id].append('logged')
+        else:
+            bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
+            query[chat_id].append('logging')
+    elif 'logged' in query[from_id]:
+        if data[0] == 'result':
+            if data[1] == 'generate':
+                bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
+                query[from_id].append('result')
+                bot.sendMessage(from_id, 'Отправь фото с описанием.📷', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [dict(text='🤷‍♂️Как?', callback_data='result.tutor')]]))
+            elif data[1] == 'tutor':
+                bot.answerCallbackQuery(query_id, 'Ща все покажу расскажу')
+                bot.sendMessage(from_id, 'Ты должен мне прислать примерно вот такое изображение с подписью!')
+                bot.sendPhoto(from_id, 'https://i1.sndcdn.com/avatars-000338809424-572092-t500x500.jpg', caption='Сикснайн.69.1000.100000')
+                bot.sendMessage(from_id, 'Тогда ты получишь такую штуку👇')
+                bot.sendPhoto(from_id, 'AgADAgAD1qoxG8zHoUhT7UKEyRdyKoOBCA4ABKbxp6mlejJiP7gBAAEC')
+        elif data[0] == 'sberbank':
+            if data[1] == 'generate':
+                bot.answerCallbackQuery(query_id, 'OK')
+                query[from_id].append('sberbank')
+                bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
+        elif data[0] == 'joycasino':
+            if data[1] == 'generate':
+                bot.answerCallbackQuery(query_id, 'OK')
+                bot.sendMessage(from_id, 'Напиши сумму🤑')
+                query[from_id].append('joycasino_amount')
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
