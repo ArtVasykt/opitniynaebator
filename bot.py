@@ -39,7 +39,7 @@ def on_chat_message(msg):
                     bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
                     query[chat_id].append('logging')
 
-        elif 'logging' in query[chat_id]
+        elif 'logging' in query[chat_id]:
             if msg['text'].lower() == PASSWORD:
                 query[chat_id].append('logged')
                 bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
