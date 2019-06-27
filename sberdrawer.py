@@ -12,7 +12,7 @@ CARDDIGITS = {}
 CARDSTAR = Image.open('fonts/sberbank/card/star.png')
 
 # SUMIMG
-for i in range(0, 6):
+for i in range(0, 10):
 	sumimg = Image.open('fonts/sberbank/sum/' + str(i) + '.png')
 	SUMDIGITS.update({str(i):sumimg})
 
@@ -64,7 +64,7 @@ def card(number):
 	space = 10
 	imgwidth = 0
 	imgheight = 30 # maximal crazy
-	spacing = 3
+	spacing = 2
 	x = 0
 	# Calculate width of image
 	for digit in number:
@@ -78,13 +78,13 @@ def card(number):
 	# Draw
 	for digit in number:
 		if digit == '*':
-			canvas.paste(CARDSTAR, box=(x, imgheight - CARDSTAR.height - 15), mask=CARDSTAR)
+			canvas.paste(CARDSTAR, box=(x, 0), mask=CARDSTAR)
 			x += CARDSTAR.width + spacing
 		elif digit == ' ':
 			x += space
 		else:
 			digit = CARDDIGITS[digit]
-			canvas.paste(digit, box=(x, imgheight - digit.height), mask=digit)
+			canvas.paste(digit, box=(x, 0), mask=digit)
 			x += digit.width + spacing
 	return canvas
 
@@ -105,4 +105,4 @@ def draw(amount, cardnum, debug=False):
 		return ('temp.PNG', output)
 
 if __name__ == "__main__":
-	draw(10000, 4276761411120203, debug=True)
+	draw(1234567890, 1234567890123456, debug=True)
