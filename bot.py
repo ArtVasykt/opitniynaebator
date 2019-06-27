@@ -52,25 +52,25 @@ def on_chat_message(msg):
                 bot.sendMessage(chat_id, '🚫Неверный пароль сука!')
 
         elif 'logged' in query[chat_id]:
-            #try:
-            if msg['text'] == '/backnahoi':
-                adminka(chat_id)
-            elif 'sberbank' in query[chat_id]:
-                numbers = msg['text'].split('.')
-                bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
-                adminka(chat_id)
-            elif 'joycasino_amount' in query[chat_id]:
-                amounts[chat_id] = msg['text']
-                bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
-                query[chat_id].remove('joycasino_amount')
-                query[chat_id].append('joycasino_mail')
-            elif 'joycasino_mail' in query[chat_id]:
-                bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
-                joycasino_query_mail.remove(chat_id)
-                adminka(chat_id)
+            try:
+                if msg['text'] == '/backnahoi':
+                    adminka(chat_id)
+                elif 'sberbank' in query[chat_id]:
+                    numbers = msg['text'].split('.')
+                    bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
+                    adminka(chat_id)
+                elif 'joycasino_amount' in query[chat_id]:
+                    amounts[chat_id] = msg['text']
+                    bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
+                    query[chat_id].remove('joycasino_amount')
+                    query[chat_id].append('joycasino_mail')
+                elif 'joycasino_mail' in query[chat_id]:
+                    bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
+                    joycasino_query_mail.remove(chat_id)
+                    adminka(chat_id)
 
-            #except Exception as e:
-            #    bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
+            except Exception as e:
+                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
             
 
     if content_type == 'photo' and 'result' in query[chat_id]:

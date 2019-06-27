@@ -66,7 +66,7 @@ def small(amount):
 def draw(mail, amount, debug=False):
 	template = Image.open('joy_template.png')
 	draw = ImageDraw.Draw(template)
-	amount = '{:,}'.format(amount)
+	amount = '{:,}'.format(int(amount))
 	bigd = big(amount)
 	smalld = small(amount)
 	template.paste(bigd, box=(BIG_CORNER - bigd.width, BIG_VERT), mask=bigd)
