@@ -30,7 +30,8 @@ def adminka(chat_id):
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-    query[chat_id] = []
+    if chat_id not in query:
+        query[chat_id] = []
     if content_type == 'text':
         if msg['text'] == '/start':
             if 'logged' not in query[chat_id]:
@@ -39,6 +40,8 @@ def on_chat_message(msg):
                 else:
                     bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
                     query[chat_id].append('logging')
+            else:
+                adminka(chat_id)
 
         elif 'logging' in query[chat_id]:
             if msg['text'].lower() == PASSWORD:
