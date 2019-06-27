@@ -66,6 +66,8 @@ def on_chat_message(msg):
                 except Exception as e:
                     bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + e)
                 adminka(chat_id)
+            elif msg['text'] == '/backnahoi':
+                adminka(chat_id)
 
     if content_type == 'photo' and chat_id in logged_users and chat_id in result_query:
         try:
