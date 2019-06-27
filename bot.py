@@ -65,6 +65,8 @@ def on_chat_message(msg):
                     query[chat_id].remove('joycasino_amount')
                     query[chat_id].append('joycasino_mail')
                 elif 'joycasino_mail' in query[chat_id]:
+                    print(amounts[chat_id])
+                    print(query)
                     bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
                     joycasino_query_mail.remove(chat_id)
                     adminka(chat_id)
