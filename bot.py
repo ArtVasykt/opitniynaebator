@@ -51,6 +51,7 @@ def on_chat_message(msg):
                 logged_users.append(chat_id)
                 logging_in.remove(chat_id)
                 bot.sendMessage(chat_id, '**Вход выполнен успешно, брат**🖤', parse_mode='Markdown')
+                adminka(chat_id)
         elif chat_id in logged_users:
             if msg['text'] == '/backnahoi':
                 adminka(chat_id)
