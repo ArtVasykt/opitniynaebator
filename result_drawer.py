@@ -69,13 +69,13 @@ def draw(face, name, age, start, revenue, debug=False):
 
 	draw = ImageDraw.Draw(template)
 	# NAME
-	helb = ImageFont.truetype('HelveticaNeueCyr-Bold.ttf', 36)
+	helb = ImageFont.truetype('fonts/HelveticaNeueCyr-Bold.ttf', 36)
 	w, h = helb.getsize(name.upper())
 	draw.text((((RES/2)-w)/2, 628.7), name.upper(), font=helb) # NAME
 	# AGE
 	age = str(age)
 	age += ' лет'
-	hell = ImageFont.truetype('HelveticaNeueCyr-Light.ttf', 28)
+	hell = ImageFont.truetype('fonts/HelveticaNeueCyr-Light.ttf', 28)
 	w, h = hell.getsize(age)
 	draw.text((((RES/2)-w)/2,665), age, font=hell)
 	# START
