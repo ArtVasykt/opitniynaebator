@@ -3,9 +3,9 @@ from io import BytesIO
 import random
 import sys
 
-BIG_CORNER = 397
+BIG_CORNER = 400
 BIG_VERT = 235
-SMALL_CORNER = 400
+SMALL_CORNER = 397
 SMALL_VERT = 274
 EMAIL_CORNER = 102
 EMAIL_VERT = 109
