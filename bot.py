@@ -30,6 +30,7 @@ def adminka(chat_id):
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
+    query[chat_id] = []
     if content_type == 'text':
         if msg['text'] == '/start':
             if 'logged' not in query[chat_id]:
