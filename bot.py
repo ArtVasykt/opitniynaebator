@@ -89,7 +89,7 @@ def on_callback_query(msg):
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
     if data[0] == 'result':
-        elif data[1] == 'generate':
+        if data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
             query[chat_id].append('result')
             bot.sendMessage(from_id, 'Отправь фото с описанием.📷', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
