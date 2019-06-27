@@ -92,7 +92,7 @@ def on_callback_query(msg):
     if data[0] == 'result':
         if data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
-            query[chat_id].append('result')
+            query[from_id].append('result')
             bot.sendMessage(from_id, 'Отправь фото с описанием.📷', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                 [dict(text='🤷‍♂️Как?', callback_data='result.tutor')]]))
         elif data[1] == 'tutor':
@@ -104,13 +104,13 @@ def on_callback_query(msg):
     elif data[0] == 'sberbank':
         if data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'OK')
-            query[chat_id].append('sberbank')
+            query[from_id].append('sberbank')
             bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
     elif data[0] == 'joycasino':
         if data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'OK')
             bot.sendMessage(from_id, 'Напиши сумму🤑')
-            query[chat_id].append('joycasino_amount')
+            query[from_id].append('joycasino_amount')
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
