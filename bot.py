@@ -101,7 +101,14 @@ def on_callback_query(msg):
         elif data[1] == 'generate':
             bot.answerCallbackQuery(query_id, 'Отправь фото с описанием.📷')
             result_query.append(from_id)
-            bot.sendMessage(from_id, 'Отправь фото с описанием.📷')
+            bot.sendMessage(from_id, 'Отправь фото с описанием.📷', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [dict(text='🤷‍♂️Как?', callback_data='result.tutor')]]))
+        elif data[1] == 'tutor':
+            bot.answerCallbackQuery(query_id, 'Ща все покажу расскажу')
+            bot.sendMessage(from_id, 'Ты должен мне прислать примерно вот такое изображение с подписью!')
+            bot.sendPhoto(from_id, 'https://i1.sndcdn.com/avatars-000338809424-572092-t500x500.jpg', caption='Сикснайн.69.1000.100000')
+            bot.sendMessage(from_id, 'Тогда ты получишь такую штуку👇')
+            bot.sendPhoto(from_id, 'AgADAgAD1qoxG8zHoUhT7UKEyRdyKoOBCA4ABKbxp6mlejJiP7gBAAEC')
         elif data[1] == 'back':
             bot.answerCallbackQuery(query_id, 'OK')
             result_query.remove(from_id)
