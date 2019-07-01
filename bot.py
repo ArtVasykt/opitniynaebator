@@ -144,7 +144,7 @@ def on_callback_query(msg):
                 query[from_id].append('sms')
                 sms_query[from_id] = []
                 bot.answerCallbackQuery(query_id, 'OK')
-                bot.sendMessage('📲Начинай писать:\nСколько написано: {0}🥇'.format(len(sms_query[from_id])))
+                bot.sendMessage(from_id, '📲Начинай писать:\nСколько написано: {0}🥇'.format(len(sms_query[from_id])))
             elif data[1] == 'delete':
                 bot.answerCallbackQuery(query_id, 'OK')
                 if len(sms_query[from_id]) != 0:
