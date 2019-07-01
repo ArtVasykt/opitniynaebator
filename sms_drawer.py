@@ -12,7 +12,6 @@ topr = Image.open(FOLDER + 'rectangle/topr.png')
 botl = Image.open(FOLDER + 'rectangle/botl.png')
 botr = Image.open(FOLDER + 'rectangle/botr.png')
 triangle = Image.open(FOLDER + 'rectangle/triangle.png')
-HEADER900 = Image.open(FOLDER + '900header.png')
 DATES = ['Сегодня', 'Вчера', 'Позавчера']
 
 
@@ -133,14 +132,15 @@ def draw(smslist, debug=False):
 	template.paste(img, box=(0, 913 - img.height), mask=img)
 
 	headerfont = ImageFont.truetype(FOLDER + 'SFUIText-Medium.ttf', size=23)
-	draw = ImageDraw.Draw(HEADER900)
+	header = Image.open(FOLDER + '900header.png')
+	draw = ImageDraw.Draw(header)
 	amountofsms = str(random.randint(1, 999))
 	headersize = headerfont.getsize(amountofsms)
 	draw.text((83 - headersize[0]/2, 38 - headersize[1]/2), amountofsms, font=headerfont, fill=(255,255,255))
 
 	outputimage = Image.new('RGBA', (750, 1297))
 	outputimage.paste(template, box=(0, 147))
-	outputimage.paste(HEADER900, box=(0,0))
+	outputimage.paste(header, box=(0,0))
 
 	if not debug:
 		output = BytesIO()
@@ -152,7 +152,6 @@ def draw(smslist, debug=False):
 	else:
 		outputimage.save('output.png', format='PNG')
 		return True
-	del HEADER900
 
 if __name__ == "__main__":
 	#bubble('VISA4734 28.06.19 Зачисление 14500 руб. от отправителя Артём В. Сообщение: "на ком. расходы', new=True).save('hui.png')
