@@ -71,6 +71,7 @@ def on_chat_message(msg):
                     bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
                     adminka(chat_id)
                 elif 'sms' in query[chat_id]:
+                    print(sms_query)
                     sms_query[chat_id].append(msg['text'])
                     sms = smsdrawer.draw(sms_query[chat_id])
                     bot.sendPhoto(chat_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
@@ -96,6 +97,7 @@ def on_chat_message(msg):
 
 
 def on_callback_query(msg):
+    print(sms_query)
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
