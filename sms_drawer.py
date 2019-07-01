@@ -5,7 +5,6 @@ import random
 # Our folder
 FOLDER = "source/sms/"
 #Prepare Bubble Files
-template = Image.open(FOLDER + 'template.png')
 RECT_COLOR = (229, 229, 234) # Material Grey
 topl = Image.open(FOLDER + 'rectangle/topl.png')
 topr = Image.open(FOLDER + 'rectangle/topr.png')
@@ -128,7 +127,7 @@ def draw(smslist, debug=False):
 			y -= item.height + spacing
 			img.paste(item, box=(21, y))
 		
-
+	template = Image.open(FOLDER + 'template.png')
 	template.paste(img, box=(0, 913 - img.height), mask=img)
 
 	headerfont = ImageFont.truetype(FOLDER + 'SFUIText-Medium.ttf', size=23)
