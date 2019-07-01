@@ -72,7 +72,7 @@ def on_chat_message(msg):
                     adminka(chat_id)
                 elif 'sms' in query[chat_id]:
                     print(sms_query)
-                    sms_query[chat_id].append(msg['text'])
+                    sms_query[chat_id].insert(0, msg['text'])
                     sms = smsdrawer.draw(sms_query[chat_id])
                     bot.sendPhoto(chat_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                         [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
