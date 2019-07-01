@@ -22,6 +22,6 @@ def draw(smslist, debug=False):
 		return True
 
 if __name__ == "__main__":
-	draw(['VISA4734 10:55 Покупка 200000р. MERCEDES-BENZ LLC. Баланс: 156787009р.',
+	draw(['Начинать суки',
 	 'ДД#0#267', 'с#VISA4734 Списание Facebook APL 6500р. Баланс: 15678765р.' ,
 	  'б#VISA4734 23:56 Выдача 1678000р. ATM Сбербанк Халтурина Баланс: 156787987р.', 'ДД#1#643'], debug=True)

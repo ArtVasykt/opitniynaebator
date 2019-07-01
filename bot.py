@@ -76,6 +76,7 @@ def on_chat_message(msg):
                     sms = smsdrawer.draw(sms_query[chat_id])
                     bot.sendPhoto(chat_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                         [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
+                    del sms
 
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
@@ -154,6 +155,7 @@ def on_callback_query(msg):
                     sms = smsdrawer.draw(sms_query[from_id])
                     bot.sendPhoto(from_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                         [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
+                    del sms
                 else:
                     adminka(from_id)
 

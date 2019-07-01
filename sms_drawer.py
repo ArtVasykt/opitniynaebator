@@ -38,7 +38,7 @@ def text_draw(text):
 	MAXTEXTWIDTH = 490
 	MAXTEXTVERT = textfont.getsize(text)[1]
 	text = text.split(' ')
-	textwidths = []
+	textwidths = [0]
 	textcoords = {}
 	textvert = MAXTEXTVERT
 	x = 0
@@ -48,7 +48,10 @@ def text_draw(text):
 	for index, word in enumerate(text):
 		cursize = textfont.getsize(word)[0]
 		futurewidth = x + cursize + space
-		textwidths.append(x)
+		if y == 0:
+			textwidths[0] += cursize + space
+		else:
+			textwidths.append(x)
 		if futurewidth >= MAXTEXTWIDTH:
 			textvert += MAXTEXTVERT + spacing
 			x = 0
@@ -58,6 +61,7 @@ def text_draw(text):
 		else:
 			textcoords.update({word + str(index): (x, y)})
 			x += cursize + space
+		print(textcoords, textwidths)
 
 	img = Image.new('RGBA', (max(textwidths), textvert))
 	draw = ImageDraw.Draw(img)
@@ -143,7 +147,7 @@ def draw(smslist, debug=False):
 		outputimage.save('output.png', format='PNG')
 		return True
 
-
 if __name__ == "__main__":
 	#bubble('VISA4734 28.06.19 Зачисление 14500 руб. от отправителя Артём В. Сообщение: "на ком. расходы', new=True).save('hui.png')
-	draw(['с#Абастар сука', 'б#Ааспыкка миигин кырбаабыттара уонна 10000 солкуобайга ыйаабыттара', 'с#Пиздалар блэ', 'ДД#0#1245','с#Бля утуй сука заебал дииллэр','б#пиздец нахуй бля', '8989898989', 'с#Бу суоьулэри кытта корустум','Ол сука'], debug=True)
+	draw(['с#Абастар сука',
+	 'б#Ааспыкка миигин кырбаабыттара уонна 10000 солкуобайга ыйаабыттара', 'с#Пиздалар блэ', 'ДД#0#1245','с#Бля утуй сука заебал дииллэр','б#пиздец нахуй бля', '8989898989', 'с#Бу суоьулэри кытта корустум','Ол сука'], debug=True)
