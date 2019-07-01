@@ -142,8 +142,6 @@ def draw(smslist, debug=False):
 	outputimage.paste(template, box=(0, 147))
 	outputimage.paste(HEADER900, box=(0,0))
 
-	del HEADER900
-
 	if not debug:
 		output = BytesIO()
 		outputimage.save(output, format='PNG')
@@ -154,6 +152,7 @@ def draw(smslist, debug=False):
 	else:
 		outputimage.save('output.png', format='PNG')
 		return True
+	del HEADER900
 
 if __name__ == "__main__":
 	#bubble('VISA4734 28.06.19 Зачисление 14500 руб. от отправителя Артём В. Сообщение: "на ком. расходы', new=True).save('hui.png')
