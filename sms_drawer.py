@@ -45,14 +45,15 @@ def text_draw(text):
 	y = 0
 	space = 10
 	spacing = 0
+	isTextOneLined = True
 	for index, word in enumerate(text):
 		cursize = textfont.getsize(word)[0]
 		futurewidth = x + cursize + space
-		if y == 0:
-			textwidths[0] += cursize + space
-		else:
-			textwidths.append(x)
+		if index == 0:
+			firstLetterWidth = cursize
+		textwidths.append(x)
 		if futurewidth >= MAXTEXTWIDTH:
+			isTextOneLined = False
 			textvert += MAXTEXTVERT + spacing
 			x = 0
 			y += MAXTEXTVERT
@@ -63,7 +64,12 @@ def text_draw(text):
 			x += cursize + space
 		print(textcoords, textwidths)
 
-	img = Image.new('RGBA', (max(textwidths), textvert))
+	if isTextOneLined:
+		print(textfont.getsize(text[-1:][0]))
+		end = textfont.getsize(text[-1:][0])
+		img = Image.new('RGBA', (sum(textwidths, end[0]), textvert))
+	else:
+		img = Image.new('RGBA', (max(textwidths), textvert))
 	draw = ImageDraw.Draw(img)
 	for index, word in enumerate(text):
 		coords = textcoords[word + str(index)]
@@ -135,6 +141,8 @@ def draw(smslist, debug=False):
 	outputimage = Image.new('RGBA', (750, 1297))
 	outputimage.paste(template, box=(0, 147))
 	outputimage.paste(HEADER900, box=(0,0))
+
+	del HEADER900
 
 	if not debug:
 		output = BytesIO()
