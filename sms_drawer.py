@@ -32,7 +32,7 @@ def datetime(date, time):
 	return img
 
 def text_draw(text):
-	textfont = ImageFont.truetype(FOLDER + 'SFUIText-Medium.ttf', size=31)
+	textfont = ImageFont.truetype(FOLDER + 'SFUIText-RegularG2.otf', size=31)
 	MAXTEXTWIDTH = 490
 	MAXTEXTVERT = textfont.getsize(text)[1]
 	text = text.split(' ')
