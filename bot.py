@@ -3,6 +3,7 @@ import os
 from flask import Flask, request
 import telepot
 from telepot.loop import OrderedWebhook
+import smswithstatusbar as smsdrawer
 import result_drawer
 import joydrawer
 import sberdrawer
@@ -17,6 +18,7 @@ Webhook path is '/webhook', therefore:
 <webhook_url>: https://<base>/webhook
 """
 query = {}
+sms_query = {}
 amounts = {}
 PASSWORD = 'артем крутой'
 ADMINS = ['474504117', 474504117]
@@ -26,7 +28,8 @@ def adminka(chat_id):
     bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
         [dict(text='Результаты Айсены😍', callback_data='result.generate')],
         [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
-        [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
+        [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')],
+        [dict(text='SMS✉️', callback_data='sms.generate')]]))
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -67,6 +70,11 @@ def on_chat_message(msg):
                 elif 'joycasino_mail' in query[chat_id]:
                     bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]), caption='На здоровье сука')
                     adminka(chat_id)
+                elif 'sms' in query[chat_id]:
+                    sms_query[chat_id].append(msg['text'])
+                    sms = smsdrawer.draw(sms_query[chat_id])
+                    bot.sendPhoto(chat_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                        [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
 
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
@@ -120,6 +128,33 @@ def on_callback_query(msg):
                 bot.answerCallbackQuery(query_id, 'OK')
                 bot.sendMessage(from_id, 'Напиши сумму🤑')
                 query[from_id].append('joycasino_amount')
+        elif data[0] == 'sms':
+            if data[1] == 'generate':
+                bot.answerCallbackQuery(query_id, 'OK')
+                bot.sendMessage(from_id, 'Если впервые ознакомься👇👇', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [dict(text="Туториал✅", callback_data='sms.tutorial')],
+                    [dict(text="Начать💻", callback_data="sms.start")]]))
+            elif data[1] == 'tutorial':
+                bot.answerCallbackQuery(query_id, 'Прочитай внимательно!')
+                bot.sendMessage(from_id, '✅Сообщения будут выводится снизу вверх\n✅Ты должен выбрать какие показать с хвостом какие нет')
+                bot.sendMessage(from_id, 'Формат сообщений таков (Разделяется через теги):\n✅"с#VISA4734" - с хвостом\n✅"б#VISA4734" - без хвоста\n✅"ДД#01#1230"')
+                bot.sendPhoto(from_id, "AgADAgADx6sxG8DQ0UiujtIrhlPFa65IUw8ABIAGKRCbL7ybVCAFAAEC", caption="Наглядно📷", reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [dict(text="Начать💻", callback_data="sms.start")]]))
+            elif data[1] == 'start':
+                query[from_id].append('sms')
+                sms_query[from_id] = []
+                bot.answerCallbackQuery(query_id, 'OK')
+                bot.sendMessage('📲Начинай писать:\nСколько написано: {0}🥇'.format(len(sms_query[from_id])))
+            elif data[1] == 'delete':
+                bot.answerCallbackQuery(query_id, 'OK')
+                if len(sms_query[from_id]) != 0:
+                    sms_query[from_id].pop()
+                    sms = smsdrawer.draw(sms_query[from_id])
+                    bot.sendPhoto(from_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                        [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
+                else:
+                    adminka(from_id)
+
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
