@@ -16,6 +16,7 @@ def chat(chatlist, name, avatar, online, debug=False):
 	if len(chatlist) == 0:
 		timeList.append('0000')
 	for chatMessage in chatlist:
+		timeList.append(chatMessage['time'])
 		messages = tcdrawer.bubble(chatMessage['textlist'], chatMessage['time'], int(chatMessage['sender']))
 		if chatMessage['sender'] == 0:
 			image.paste(messages, (image.width - messages.width - 8, image.height - messages.height - y))
