@@ -42,7 +42,6 @@ def adminka(chat_id):
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-    print(msg['text'])
     if chat_id not in query:
         query[chat_id] = []
     if content_type == 'text':
