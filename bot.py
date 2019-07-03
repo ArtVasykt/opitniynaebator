@@ -245,7 +245,7 @@ def on_callback_query(msg):
                 telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps']].pop()
                 result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
                     telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
-            bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
+                bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
             elif data[1] == 'time':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('telegram_gen')
