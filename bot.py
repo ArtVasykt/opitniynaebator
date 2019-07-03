@@ -254,7 +254,7 @@ def on_callback_query(msg):
         elif data[0] == 'watermark':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
-                query[from_id].append(watermark_target)
+                query[from_id].append('watermark_target')
                 bot.sendMessage(from_id, '📲Отправь сюда фото, которое хочешь завотермарить.✏️')
             elif data[1] == 'baina':
                 bot.answerCallbackQuery(query_id, 'OK')
