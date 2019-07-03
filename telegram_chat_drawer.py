@@ -133,7 +133,7 @@ def bubble(textList, timer, sender=0):
 			time = time_draw(timer, sender=sender, isImage=True)
 			print('YEah')
 			isImage = True
-			text = text.resize((text.width // 2, text.height // 2))
+			text = text.resize((text.width // 2, text.height // 2), resample=Image.LANCZOS)
 			width = text.width - 12
 			height = text.height - 17
 			result = Image.new('RGB', (width + 12, height + 17), color=(24,34,45))

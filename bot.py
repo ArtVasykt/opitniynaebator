@@ -5,6 +5,7 @@ import telepot
 from telepot.loop import OrderedWebhook
 import smswithstatusbar as smsdrawer
 from telegram_drawer import chat as chatdraw
+import watermarker as wm
 import result_drawer
 import joydrawer
 import sberdrawer
@@ -21,7 +22,9 @@ Webhook path is '/webhook', therefore:
 query = {}
 sms_query = {}
 telegram_query = {}
+img_query = {}
 amounts = {}
+WATERMARK_MODE = True
 PASSWORD = 'артем крутой'
 ADMINS = ['474504117', 474504117]
 
@@ -38,7 +41,8 @@ def adminka(chat_id):
         [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
         [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')],
         [dict(text='SMS✉️', callback_data='sms.generate')],
-        [dict(text='Telegram[Beta]💠', callback_data='telegram.generate')]]))
+        [dict(text='Telegram[Beta]💠', callback_data='telegram.generate')],
+        [dict(text='Watermark✏️', callback_data='watermark.generate')]]))
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -145,6 +149,23 @@ def on_chat_message(msg):
             result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
                         telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
             bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
+        elif 'watermark_target' in query[chat_id]:
+            query[chat_id].remove('watermark_target')
+            query[chat_id].append('watermark_mark')
+            file = BytesIO()
+            bot.download_file(msg['photo'][-1]['file_id'], file)
+            file.seek(0)
+            img_query.update({chat_id: Image.open(file)})
+            bot.sendMessage(chat_id, 'Отправьте собственную вотермарку или выберите нужный.🖌', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [dict(text='Баина Щедрая💘', callback_data='watermark.baina')],
+                [dict(text='Albinos Money Team💵', callback_data='watermark.albinos')]]))
+        elif 'watermark_mark' in query[chat_id]:
+            query[chat_id].remove('watermark_mark')
+            file = BytesIO()
+            bot.download_file(msg['photo'][-1]['file_id'], file)
+            file.seek(0)
+            bot.sendPhoto(chat_id, wm.mark(img_query, Image.open(file)))
+
 
 def on_callback_query(msg):
     print(sms_query)
@@ -221,11 +242,33 @@ def on_callback_query(msg):
                                                             'time': telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps'] - 1]['time']})
             elif data[1] == 'undo':
                 bot.answerCallbackQuery(query_id, 'OK')
+                telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps']].pop()
+                result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
+                    telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
+            bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
             elif data[1] == 'time':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('telegram_gen')
                 query[from_id].append('telegram_time')
                 bot.sendMessage(from_id, 'Напишите время⏰')
+        elif data[0] == 'watermark':
+            if data[1] == 'generate':
+                bot.answerCallbackQuery(query_id, 'OK')
+                query[from_id].append(watermark_target)
+                bot.sendMessage(from_id, '📲Отправь сюда фото, которое хочешь завотермарить.✏️')
+            elif data[1] == 'baina':
+                bot.answerCallbackQuery(query_id, 'OK')
+                query[from_id].remove('watermark_mark')
+                img = Image.open('source/baina.png')
+                wm.mark(img_query[from_id], img)
+                adminka(from_id)
+            elif data[1] == 'albinos':
+                bot.answerCallbackQuery(query_id, 'OK')
+                query[from_id].remove('watermark_mark')
+                img = Image.open('source/albinos.png')
+                wm.mark(img_query[from_id], img)
+                adminka(from_id)
+
 
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'

@@ -2,7 +2,7 @@ import telegram_chat_drawer as tcdrawer
 from PIL import Image
 from io import BytesIO
 
-CORNER = 1074
+CORNER = 90
 
 def chat(chatlist, name, avatar, online, debug=False):
 	# chatlist {}
@@ -28,9 +28,9 @@ def chat(chatlist, name, avatar, online, debug=False):
 	header = tcdrawer.header_draw(name, avatar, online)
 	statusbar = tcdrawer.statusbar_draw(max(timeList))
 	result = Image.new('RGB', (750, header.height + template.height + statusbar.height))
-	template.paste(image, (0, CORNER - image.height))
-	result.paste(template, (0, header.height))
-	result.paste(header, (0, 40))
+	result.paste(template, (0, result.height - template.height))
+	result.paste(image, (0, result.height - image.height - CORNER))
+	result.paste(header, (0, statusbar.height))
 	result.paste(statusbar, (0, 0))
 	
 
@@ -45,4 +45,4 @@ def chat(chatlist, name, avatar, online, debug=False):
 
 
 if __name__ == "__main__":
-	chat([],'Норка Шубачаан', Image.open('ebalo.jpg'), online=4,  debug=True)
+	chat([{'sender':0,'textlist':['Абас', 'Сверху карамаз'], 'time':'1280'}],'Норка Шубачаан', Image.open('ebalo.jpg'), online=4,  debug=True)
