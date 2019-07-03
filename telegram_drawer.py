@@ -1,109 +1,46 @@
-from PIL import Image, ImageFont, ImageDraw
-import random
+import telegram_chat_drawer as tcdrawer
+from PIL import Image
+from io import BytesIO
 
-FOLDER = 'source/telegram/'
+CORNER = 1074
 
-TEXTFONT = ImageFont.truetype(FOLDER + 'SFUIText-RegularG2.otf', 33)
-TIMEFONT = ImageFont.truetype(FOLDER + 'SFUIText-Lightitalic.ttf', 22)
-
-SENT = {'botl': Image.open(FOLDER + 'sent/botl.png'),
-		'botr': Image.open(FOLDER + 'sent/botr.png'),
-		'topl': Image.open(FOLDER + 'sent/topl.png'),
-		'topr': Image.open(FOLDER + 'sent/topr.png'),
-		'tail': Image.open(FOLDER + 'sent/tail.png'),
-		'topr_glad': Image.open(FOLDER + 'sent/topr_glad.png'),
-		'sent': Image.open(FOLDER + 'sent/sent.png')}
-
-TIME = str(random.randint(0,23) + random.randint(0,60))
-
-def time_draw(time):
-	time = time[:-2] + ':' + time[-2:]
-	im = Image.new('RGB', TIMEFONT.getsize(time), color=(61, 106, 151))
-	draw = ImageDraw.Draw(im)
-	draw.text((0, 0), time, font=TIMEFONT, fill=(140, 176, 203))
-	return im
-
-def text_draw(text):
-	# calculate
-	limit = 583
-	textCoords = {}
-	textSplit = text.split(' ')
-	spacing = 6
-	space = 10
-	xlog = []
-	ylog = []
-	x, y = (0, 0)
-	for index, word in enumerate(textSplit):
-		curwidth = TEXTFONT.getsize(word)[0]
-		futureWidth = curwidth + x + space
-		if futureWidth >= limit:
-			y += TEXTFONT.getsize(word)[1] + spacing
-			x = 0
-			textCoords.update({word + str(index) : (x, y)})
-			x += curwidth + space	
-		else:
-			textCoords.update({word + str(index) : (x, y)})
-			x += curwidth + space
-			ylog.append(TEXTFONT.getsize(word)[1])
-			xlog.append(x)
-	print(textCoords)
-
-	im = Image.new('RGBA', (max(xlog), y + max(ylog)), color=(61, 106, 151))
-	draw = ImageDraw.Draw(im)
-	for index, word in enumerate(textSplit):
-		draw.text(textCoords[word + str(index)], word, font=TEXTFONT, fill=(255, 255, 255))
-	return im, y
-
-def sent(textList, time):
-	time = time_draw(time)
-	imgs = []
-	marginTop = 12
-	marginBot = 21
-	marginRight = 115
-	marginLeft = 26
-	results = []
-	for index, text in enumerate(textList):
-		text, y = text_draw(text)
-		print(text)
-		if y == 0:
-			height = 70
-			width = marginRight + marginLeft + text.width
-		else:
-			height = marginTop + marginBot + text.height
-			width = marginRight + marginLeft + text.width - 103
-		result = Image.new('RGB', (width + 12, height), color=(24,34,45))
-		img = Image.new('RGB', (width, height), color=(61, 106, 151))
-		img.paste(SENT['topl'], box=(0,0))
-		img.paste(SENT['topr'], box=(width - SENT['topr'].width, 0))
-		img.paste(SENT['botl'], box=(0, height - SENT['botl'].height))
-		img.paste(SENT['botr'], box=(width - SENT['botr'].width, height - SENT['botr'].height))
-		if index == 0:
-			img.paste(SENT['topr_glad'], box=(width - SENT['topr_glad'].width, 0))
-		if text.height == 32:
-			pass
-		img.paste(text, box=(marginLeft, marginTop))
-		result.paste(img, box=(0, 0))
-		if index == len(textList) - 1:
-			result.paste(SENT['tail'], box=(result.width - SENT['tail'].width, result.height - SENT['tail'].height))
-		result.paste(SENT['sent'], box=(result.width - 59, result.height - SENT['sent'].height - 17))
-		result.paste(time, box=(result.width - 119, result.height - time.height - 17))
-		results.append(result)
-
-	size = [[], 0]
-	spacing = 4
-	for result in results:
-		size[0].append(result.width)
-		size[1] += result.height + spacing
-
-	resultImage = Image.new('RGB', (max(size[0]), size[1]), color=(24,34,45))
-
+def chat(chatlist, name, avatar, online, debug=False):
+	# chatlist {}
+	# sender int - 0 - you 1 - other
+	# textlist [] - list of strings
+	# time string - format '1020'
+	template = Image.open('source/telegram/template.png')
+	image = Image.new('RGBA', (750, 3000), color=(24,34,45))
+	timeList = []
 	y = 0
-	for result in results:
-		resultImage.paste(result, box=(resultImage.width - result.width, y))
-		y += result.height + spacing
+	if len(chatlist) == 0:
+		timeList.append('0000')
+	for chatMessage in chatlist:
+		messages = tcdrawer.bubble(chatMessage['textlist'], chatMessage['time'], int(chatMessage['sender']))
+		if chatMessage['sender'] == 0:
+			image.paste(messages, (image.width - messages.width - 8, image.height - messages.height - y))
+		else:
+			image.paste(messages, (8, image.height - messages.height - y))
+		y += messages.height
 
-	return resultImage
+	header = tcdrawer.header_draw(name, avatar, online)
+	statusbar = tcdrawer.statusbar_draw(max(timeList))
+	result = Image.new('RGB', (750, header.height + template.height + statusbar.height))
+	template.paste(image, (0, CORNER - image.height))
+	result.paste(template, (0, header.height))
+	result.paste(header, (0, 40))
+	result.paste(statusbar, (0, 0))
+	
+
+	if not debug:
+		output = BytesIO()
+		result.save(output, format='PNG')
+		output.seek(0)
+		return ('temp.PNG', output)
+	else:
+		result.save('output.png', format='PNG')
+		return True
+
 
 if __name__ == "__main__":
-	sent(['Абашкевич','Абас', 'Саайсан ылыан да миигин?😄'], '1822').save('output.png')
-	text_draw('Ты пидор')[0].save('print.png')
+	chat([],'Норка Шубачаан', Image.open('ebalo.jpg'), online=4,  debug=True)
