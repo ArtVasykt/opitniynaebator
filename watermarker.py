@@ -3,7 +3,6 @@ from io import BytesIO
 
 def mark(target, waterimage):
 	waterimage = waterimage.convert('RGBA')
-	waterimage.putalpha(128)
 	x = 0
 	y = 0
 	while True:
