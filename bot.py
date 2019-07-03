@@ -21,7 +21,7 @@ Webhook path is '/webhook', therefore:
 """
 query = {}
 sms_query = {}
-telegram_query = {}
+tq = {} # Telegram query
 img_query = {}
 amounts = {}
 WATERMARK_MODE = True
@@ -89,28 +89,25 @@ def on_chat_message(msg):
                     sms = smsdrawer.draw(sms_query[chat_id])
                     bot.sendPhoto(chat_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                         [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
-                    del sms
                 elif 'telegram_name' in query[chat_id]:
-                    telegram_query[chat_id]['name'] = msg['text']
-                    result = chatdraw([],telegram_query[chat_id]['name'],
-                        telegram_query[chat_id]['avatar'],0)
-                    bot.sendPhoto(chat_id, result,caption='✅Отличное имя! Начинайте писать!')
-                    telegram_query[chat_id]['chatlist'] = [{'sender':0, 'textlist':[], 'time':'0000'}]
-                    telegram_query[chat_id]['countofswaps'] = 0
-                    telegram_query[chat_id]['online'] = 0
+                    tg = tq[chat_id]
+                    tg['name'] = msg['text']
+                    result = chatdraw(tg['textlist'],tg['name'],tg['avatar'],tg['online'])
+                    bot.sendPhoto(chat_id, result, caption='✅Отличное имя! Начинайте писать!')
                     query[chat_id].remove('telegram_name')
                     query[chat_id].append('telegram_gen')
                 elif 'telegram_time' in query[chat_id]:
-                    telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps']]['time'] = msg['text']
-                    result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
-                        telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
+                    tg = tq[chat_id]
+                    tg['textlist'][tg['count']]['time'] = msg['text']
+                    result = chatdraw(tg['textlist'],tg['name'],
+                        tg['avatar'],tg['online'])
                     bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
                     query[chat_id].remove('telegram_time')
                     query[chat_id].append('telegram_gen')
                 elif 'telegram_gen' in query[chat_id]:
-                    telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps']]['textlist'].append(msg['text'])
-                    result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
-                        telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
+                    tg = tq[chat_id]
+                    tg['textlist'][tg['countofswaps']]['textlist'].append(msg['text'])
+                    result = chatdraw(tg['textlist'],tg['name'], tg['avatar'],tg['online'])
                     bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
 
             except Exception as e:
@@ -132,22 +129,23 @@ def on_chat_message(msg):
             except IndexError:
                 bot.sendMessage(chat_id, "🚫Неправильное описание (т.е. подпись к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
         elif 'telegram_photo' in query[chat_id]:
+            tg = tq[chat_id]
             file = BytesIO()
             bot.download_file(msg['photo'][-1]['file_id'], file)
             file.seek(0)
             avatar = Image.open(file)
-            telegram_query[chat_id]['avatar'] = avatar
+            tg['avatar'] = avatar
             bot.sendMessage(chat_id, '✅Хорошо, аватар загружен. Теперь введите имя.')
             query[chat_id].remove('telegram_photo')
             query[chat_id].append('telegram_name')
         elif 'telegram_gen' in query[chat_id]:
+            tg = tq[chat_id]
             file = BytesIO()
             bot.download_file(msg['photo'][-1]['file_id'], file)
             file.seek(0)
             img = Image.open(file)
-            telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps']]['textlist'].append(img)
-            result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
-                        telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
+            tg['textlist'][tg['count']]['textlist'].append(img)
+            result = chatdraw(tg['textlist'], tg['name'], tg['avatar'],tg['online'])
             bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
         elif 'watermark_target' in query[chat_id]:
             query[chat_id].remove('watermark_target')
@@ -168,7 +166,6 @@ def on_chat_message(msg):
 
 
 def on_callback_query(msg):
-    print(sms_query)
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
@@ -191,16 +188,22 @@ def on_callback_query(msg):
                 bot.sendPhoto(from_id, 'https://i1.sndcdn.com/avatars-000338809424-572092-t500x500.jpg', caption='Сикснайн.69.1000.100000')
                 bot.sendMessage(from_id, 'Тогда ты получишь такую штуку👇')
                 bot.sendPhoto(from_id, 'AgADAgAD1qoxG8zHoUhT7UKEyRdyKoOBCA4ABKbxp6mlejJiP7gBAAEC')
+        
+
         elif data[0] == 'sberbank':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].append('sberbank')
                 bot.sendMessage(from_id, 'Кароч напиши сколько ты ему "перевел"💵\n\nP.S. Можно использовать знаки только 1-5 и 0\n\n И его карту (16 цифр)💳\n\nЧЕРЕЗ ТОЧКУ.\n\nПример: 10000.4276656589765432')
+        
+
         elif data[0] == 'joycasino':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
                 bot.sendMessage(from_id, 'Напиши сумму🤑')
                 query[from_id].append('joycasino_amount')
+
+
         elif data[0] == 'sms':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
@@ -225,32 +228,34 @@ def on_callback_query(msg):
                     sms = smsdrawer.draw(sms_query[from_id])
                     bot.sendPhoto(from_id, sms, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                         [dict(text="Отменить последнее🔙", callback_data="sms.delete")]]))
-                    del sms
                 else:
                     adminka(from_id)
+
+
         elif data[0] == 'telegram':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
                 bot.sendMessage(from_id, '📲Отправь фото аватарки')
-                telegram_query.update({from_id: {'online': 0 }})
+                tq.update({from_id: {'textlist':[], 'online': 0, 'time': '12:00', 'count':0}})
                 query[from_id].append('telegram_photo')
             elif data[1] == 'swap':
+                tg = tq[chat_id]
                 bot.answerCallbackQuery(query_id, 'OK')
-                telegram_query[from_id]['countofswaps'] += 1
-                telegram_query[from_id]['chatlist'].append({'sender': telegram_query[from_id]['countofswaps'] % 2,
-                                                            'textlist':[],
-                                                            'time': telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps'] - 1]['time']})
+                tg['count'] += 1
+                tg['textlist'].append({'sender': tg['count'] % 2,'textlist':[], 'time': tg['textlist'][tg['count'] - 1]['time']})
             elif data[1] == 'undo':
+                tg = tq[chat_id]
                 bot.answerCallbackQuery(query_id, 'OK')
-                telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps']].pop()
-                result = chatdraw(telegram_query[from_id]['chatlist'],telegram_query[from_id]['name'],
-                    telegram_query[from_id]['avatar'],telegram_query[from_id]['online'])
+                tg['textlist'][tg['count']].pop()
+                result = chatdraw(tg['textlist'],tg['name'],tg['avatar'],tg['online'])
                 bot.sendPhoto(from_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
             elif data[1] == 'time':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('telegram_gen')
                 query[from_id].append('telegram_time')
                 bot.sendMessage(from_id, 'Напишите время⏰')
+
+
         elif data[0] == 'watermark':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')

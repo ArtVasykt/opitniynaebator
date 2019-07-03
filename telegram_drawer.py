@@ -5,7 +5,7 @@ from io import BytesIO
 CORNER = 90
 
 def chat(chatlist, name, avatar, online, debug=False):
-	# chatlist {}
+	# chatlist [{}]
 	# sender int - 0 - you 1 - other
 	# textlist [] - list of strings
 	# time string - format '1020'
