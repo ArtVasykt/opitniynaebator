@@ -5,7 +5,7 @@ import random
 FOLDER = 'source/telegram/'
 
 TEXTFONT = ImageFont.truetype(FOLDER + 'SFUIText-RegularG2.otf', 33)
-TIMEFONT = ImageFont.truetype(FOLDER + 'SFUIText-Lightitalic.ttf', 22)
+TIMEFONT = ImageFont.truetype(FOLDER + 'SFUIText-LightItalic.ttf', 22)
 
 SENT = {'botl': Image.open(FOLDER + 'sent/botl.png'),
 		'botr': Image.open(FOLDER + 'sent/botr.png'),
