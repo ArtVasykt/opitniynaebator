@@ -96,11 +96,6 @@ def on_chat_message(msg):
                     telegram_query[chat_id]['online'] = 0
                     query[chat_id].remove('telegram_name')
                     query[chat_id].append('telegram_gen')
-                elif 'telegram_gen' in query[chat_id]:
-                    telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps']]['textlist'].append(msg['text'])
-                    result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
-                        telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
-                    bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
                 elif 'telegram_time' in query[chat_id]:
                     telegram_query[chat_id]['chatlist'][telegram_query['chat_id']['countofswaps']]['time'] = msg['text']
                     result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
@@ -111,6 +106,12 @@ def on_chat_message(msg):
 
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
+
+        if 'telegram_gen' in query[chat_id]:
+            telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps']]['textlist'].append(msg['text'])
+            result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
+                telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
+            bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
             
 
     if content_type == 'photo':
