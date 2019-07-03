@@ -106,7 +106,7 @@ def on_chat_message(msg):
                     query[chat_id].append('telegram_gen')
                 elif 'telegram_gen' in query[chat_id]:
                     tg = tq[chat_id]
-                    tg['textlist'][tg['countofswaps']]['textlist'].append(msg['text'])
+                    tg['textlist'][tg['count']]['textlist'].append(msg['text'])
                     result = chatdraw(tg['textlist'],tg['name'], tg['avatar'],tg['online'])
                     bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
 
