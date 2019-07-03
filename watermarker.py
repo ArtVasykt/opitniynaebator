@@ -1,4 +1,5 @@
 from PIL import Image
+from io import BytesIO
 
 def mark(target, waterimage):
 	waterimage = waterimage.convert('RGBA')

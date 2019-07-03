@@ -6,7 +6,6 @@ from telepot.loop import OrderedWebhook
 import smswithstatusbar as smsdrawer
 from telegram_drawer import chat as chatdraw
 import watermarker as wm
-from io import BytesIO
 import result_drawer
 import joydrawer
 import sberdrawer
