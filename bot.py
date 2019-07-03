@@ -211,7 +211,7 @@ def on_callback_query(msg):
         elif data[0] == 'telegram':
             if data[1] == 'generate':
                 bot.answerCallbackQuery(query_id, 'OK')
-                bot.sendPhoto(from_id, '📲Отправь фото аватарки')
+                bot.sendMessage(from_id, '📲Отправь фото аватарки')
                 telegram_query.update({from_id: {'online': 0 }})
                 query[from_id].append('telegram_photo')
             elif data[1] == 'swap':
