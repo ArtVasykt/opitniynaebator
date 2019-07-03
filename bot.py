@@ -260,13 +260,13 @@ def on_callback_query(msg):
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('watermark_mark')
                 img = Image.open('source/baina.png')
-                wm.mark(img_query[from_id], img)
+                bot.sendPhoto(from_id, wm.mark(img_query[from_id], img))
                 adminka(from_id)
             elif data[1] == 'albinos':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('watermark_mark')
                 img = Image.open('source/albinos.png')
-                wm.mark(img_query[from_id], img)
+                bot.sendPhoto(from_id, wm.mark(img_query[from_id], img))
                 adminka(from_id)
 
 
