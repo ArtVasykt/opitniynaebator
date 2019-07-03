@@ -104,14 +104,17 @@ def on_chat_message(msg):
                     bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
                     query[chat_id].remove('telegram_time')
                     query[chat_id].append('telegram_gen')
+
+
+            except Exception as e:
+                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
+                
             if 'telegram_gen' in query[chat_id]:
                 tg = tq[chat_id]
                 tg['textlist'][tg['count']]['textlist'].append(msg['text'])
                 result = chatdraw(tg['textlist'],tg['name'], tg['avatar'],tg['online'])
                 bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
 
-            except Exception as e:
-                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
             
 
     if content_type == 'photo':
