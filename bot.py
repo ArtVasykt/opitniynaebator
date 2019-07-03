@@ -133,7 +133,7 @@ def on_chat_message(msg):
             file.seek(0)
             avatar = Image.open(file)
             telegram_query[chat_id]['avatar'] = avatar
-            bot.sendMessage('✅Хорошо, аватар загружен. Теперь введите имя.')
+            bot.sendMessage(chat_id, '✅Хорошо, аватар загружен. Теперь введите имя.')
             query[chat_id].remove('telegram_photo')
             query[chat_id].append('telegram_name')
         elif 'telegram_gen' in query[chat_id]:
@@ -155,8 +155,8 @@ def on_callback_query(msg):
         if from_id in ADMINS:
             query[from_id].append('logged')
         else:
-            bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
-            query[chat_id].append('logging')
+            bot.sendMessage(from_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
+            query[from_id].append('logging')
     elif 'logged' in query[from_id]:
         if data[0] == 'result':
             if data[1] == 'generate':
@@ -215,10 +215,10 @@ def on_callback_query(msg):
                 query[from_id].append('telegram_photo')
             elif data[1] == 'swap':
                 bot.answerCallbackQuery(query_id, 'OK')
-                telegram_query[chat_id]['countofswaps'] += 1
-                telegram_query[chat_id]['chatlist'].append({'sender': telegram_query[chat_id]['countofswaps'] % 2,
+                telegram_query[from_id]['countofswaps'] += 1
+                telegram_query[from_id]['chatlist'].append({'sender': telegram_query[from_id]['countofswaps'] % 2,
                                                             'textlist':[],
-                                                            'time': telegram_query[chat_id]['chatlist'][telegram_query[chat_id]['countofswaps'] - 1]['time']})
+                                                            'time': telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps'] - 1]['time']})
             elif data[1] == 'undo':
                 bot.answerCallbackQuery(query_id, 'OK')
             elif data[1] == 'time':
