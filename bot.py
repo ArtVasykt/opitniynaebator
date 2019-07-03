@@ -6,6 +6,7 @@ from telepot.loop import OrderedWebhook
 import smswithstatusbar as smsdrawer
 from telegram_drawer import chat as chatdraw
 import watermarker as wm
+from io import BytesIO
 import result_drawer
 import joydrawer
 import sberdrawer
@@ -164,7 +165,7 @@ def on_chat_message(msg):
             file = BytesIO()
             bot.download_file(msg['photo'][-1]['file_id'], file)
             file.seek(0)
-            bot.sendPhoto(chat_id, wm.mark(img_query, Image.open(file)))
+            bot.sendPhoto(chat_id, wm.mark(img_query[chat_id], Image.open(file)))
 
 
 def on_callback_query(msg):
@@ -243,9 +244,9 @@ def on_callback_query(msg):
             elif data[1] == 'undo':
                 bot.answerCallbackQuery(query_id, 'OK')
                 telegram_query[from_id]['chatlist'][telegram_query[from_id]['countofswaps']].pop()
-                result = chatdraw(telegram_query[chat_id]['chatlist'],telegram_query[chat_id]['name'],
-                    telegram_query[chat_id]['avatar'],telegram_query[chat_id]['online'])
-                bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
+                result = chatdraw(telegram_query[from_id]['chatlist'],telegram_query[from_id]['name'],
+                    telegram_query[from_id]['avatar'],telegram_query[from_id]['online'])
+                bot.sendPhoto(from_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
             elif data[1] == 'time':
                 bot.answerCallbackQuery(query_id, 'OK')
                 query[from_id].remove('telegram_gen')
