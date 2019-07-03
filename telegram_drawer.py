@@ -12,6 +12,7 @@ def chat(chatlist, name, avatar, online, debug=False):
 	template = Image.open('source/telegram/template.png')
 	image = Image.new('RGBA', (750, 3000), color=(24,34,45))
 	timeList = []
+	chatlist.reverse()
 	y = 0
 	if len(chatlist) == 0:
 		timeList.append('0000')
