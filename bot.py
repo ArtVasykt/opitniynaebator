@@ -147,7 +147,7 @@ def conversion():
 	summa = request.args.get('sum')
 	operationsystem = request.args.get('os')
 	for admin in ADMINS:
-		bot.sendMessage(admin, "✅**КОНВЕРСИЯ!**✅\n— — — — — — — —\n📡IP:		**{0}**\n🧩Оффер: **{1}**\n🗾ГЕО: **{2}**\n🏢Город: **{3}**\n💵Сумма: **{4}**\n💽ОС: **{5}**\n— — — — — — — —".format(ip, offer, geo, city, summa, operationsystem), parse_mode="Markdown")
+		bot.sendMessage(admin, "✅**КОНВЕРСИЯ!**✅\n— — — — — — — —\n📡IP:		*{0}*\n🧩Оффер: **{1}**\n🗾ГЕО: **{2}**\n🏢Город: **{3}**\n💵Сумма: **{4}**\n💽ОС: **{5}**\n— — — — — — — —".format(ip, offer, geo, city, summa, operationsystem), parse_mode="Markdown")
 	return 'OK'
 
 
