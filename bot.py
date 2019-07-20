@@ -26,7 +26,7 @@ img_query = {}
 amounts = {}
 WATERMARK_MODE = True
 PASSWORD = 'артем крутой'
-ADMINS = ['474504117', 474504117]
+ADMINS = ['474504117', '551475668']
 
 TELEGRAM_CONTROL = [
     [dict(text='Свап💬', callback_data='telegram.swap')],
@@ -108,10 +108,10 @@ def on_chat_message(msg):
 
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
-                
+
             if 'telegram_gen' in query[chat_id]:
                 tg = tq[chat_id]
-                tg['textlist'][tg['count']]['textlist'].append(msg['text'])
+                tg['textlist'][tg['count']].append(msg['text'])
                 result = chatdraw(tg['textlist'],tg['name'], tg['avatar'],tg['online'])
                 bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
 
@@ -147,7 +147,7 @@ def on_chat_message(msg):
             bot.download_file(msg['photo'][-1]['file_id'], file)
             file.seek(0)
             img = Image.open(file)
-            tg['textlist'][tg['count']]['textlist'].append(img)
+            tg['textlist'][tg['count']].append(img)
             result = chatdraw(tg['textlist'], tg['name'], tg['avatar'],tg['online'])
             bot.sendPhoto(chat_id, result, reply_markup=InlineKeyboardMarkup(inline_keyboard=TELEGRAM_CONTROL))
         elif 'watermark_target' in query[chat_id]:
@@ -278,7 +278,6 @@ def on_callback_query(msg):
                 adminka(from_id)
 
 
-
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
 
@@ -291,6 +290,28 @@ webhook = OrderedWebhook(bot, {'chat': on_chat_message,
 def pass_update():
     webhook.feed(request.data)
     return 'OK'
+
+@app.route('/conversion', methods=['GET'])
+def conversion():
+	webhook.feed(request.data)
+	ip = request.args.get('ip')
+	offer = request.args.get('offer')
+	geo = request.args.get('geo')
+	city = request.args.get('city')
+	summa = request.args.get('sum')
+	operationsystem = request.args.get('os')
+	for admin in ADMINS:
+		bot.sendMessage(admin, '''✅КОНВЕРСИЯ!✅\n
+								  — — — — — — — —\n
+							      📡IP:{0}\n
+								  🧩Оффер:{1}\n
+								  🗾ГЕО:{2}\n
+								  🏢Город:{3}\n
+								  💵Сумма:{4}\n
+								  💽ОС:{5}\n
+								  — — — — — — — —'''.format(ip, offer, geo, city, summa, operationsystem))
+	return 'OK'
+
 
 if __name__ == '__main__':
     try:
