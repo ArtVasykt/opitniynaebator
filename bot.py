@@ -19,7 +19,7 @@ Webhook path is '/webhook', therefore:
 query = {}
 WATERMARK_MODE = True
 PASSWORD = 'артем крутой'
-ADMINS = ['474504117', '551475668']
+ADMINS = [474504117, 551475668]
 
 def adminka(chat_id):
     query[chat_id] = ['logged']
