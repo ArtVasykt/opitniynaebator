@@ -140,6 +140,7 @@ def pass_update():
 @app.route('/conversion', methods=['GET'])
 def conversion():
 	webhook.feed(request.data)
+	print(request.args)
 	ip = request.args.get('ip')
 	offer = request.args.get('offer')
 	geo = request.args.get('geo')
