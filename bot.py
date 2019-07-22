@@ -16,6 +16,7 @@ $ python2.7 flask_skeleton.py <token> <listening_port> <webhook_url>
 Webhook path is '/webhook', therefore:
 <webhook_url>: https://<base>/webhook
 """
+amounts = {}
 query = {}
 WATERMARK_MODE = True
 PASSWORD = 'артем крутой'
