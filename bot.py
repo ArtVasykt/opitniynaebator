@@ -146,7 +146,7 @@ def conversion():
 	city = request.args.get('city')
 	summa = request.args.get('sum')
 	operationsystem = request.args.get('os')
-	if summa != 0:
+	if summa != '0':
 		for admin in ADMINS:
 			bot.sendMessage(admin, "✅*ДЕП!*✅", parse_mode="Markdown")
 	return 'OK'
