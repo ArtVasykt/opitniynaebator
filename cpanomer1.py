@@ -1,4 +1,6 @@
 import requests
+from datetime import datetime
+from pytz import timezone
 from bs4 import BeautifulSoup
 
 url = 'http://my.cpanomer1.ru/'
@@ -26,6 +28,10 @@ def get_balance():
 	s = connect()
 	r = s.get(url + 'dashboard')
 	soup = BeautifulSoup(r.text, features='html.parser')
+
+	moscow = timezone('Europe/Moscow')
+	now = moscow.localize(datetime.now()).strftime('%d-%m-%Y')
+	today_revenue = s.get(url + 'stats/ajax_get_data?params[mode]=daily&params[date_from]={0}&params[date_to]={1}&params[currency]=RUB&params[timezone]=Europe/Moscow'.format(now, now))
 	# EUR 0 0 0 RUB 0 0 0 USD 0 0 0
 	balance = [x.text.replace('\xa0', ' ') for x in soup.find_all('table')[1].find_all('td')]
 	balance = {
@@ -36,6 +42,10 @@ def get_balance():
 		'Баланс': {
 			'RUB': balance[5],
 			'USD': balance[9]
+		},
+		'За сегодня': {
+			'Заработано': today_revenue.json()['total']['actions']['total']['revenue'],
+			'Депов': today_revenue.json()['total']['actions']['pending']['count']
 		}
 	}
 	return balance

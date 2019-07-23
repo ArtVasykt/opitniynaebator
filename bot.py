@@ -26,7 +26,7 @@ ADMINS = [474504117, 551475668]
 def adminka(chat_id):
     query[chat_id] = ['logged']
     bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-    	[dict(text='Баланс🤑', callback_data='cpanomer1.balance')],
+    	[dict(text='Баланс CPA#1💵', callback_data='cpanomer1.balance')],
         [dict(text='Результаты Айсены😍', callback_data='result.generate')],
         [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
         [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
@@ -130,8 +130,8 @@ def on_callback_query(msg):
         	if data[1] == 'balance':
         		balance = cpa.get_balance()
         		bot.answerCallbackQuery(query_id, 'OK')
-        		bot.sendMessage(from_id, '*Холд:*\nRUB {0}\nUSD {1}\n*Баланс:*\nRUB {2}\nUSD {3}'.format(
-        		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD']), parse_mode='Markdown')
+        		bot.sendMessage(from_id, '*Холд:*\nRUB {0}р.\nUSD {1}$\n*Баланс:*\nRUB {2}р.\nUSD {3}$\n_В общем за сегодня депов_ *{4}* _заработано_ *{5} р.*'.format(
+        		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD'], balance['За сегодня']['Депов'], balance['За сегодня']['Заработано']), parse_mode='Markdown')
         		adminka(from_id)
 
 
