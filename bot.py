@@ -7,6 +7,7 @@ import result_drawer
 import joydrawer
 import sberdrawer
 import random
+import cpanomer1 as cpa
 from io import BytesIO
 from PIL import Image
 from telepot.namedtuple import ReplyKeyboardMarkup, InlineKeyboardMarkup
@@ -25,6 +26,7 @@ ADMINS = [474504117, 551475668]
 def adminka(chat_id):
     query[chat_id] = ['logged']
     bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+    	[dict(text='Баланс🤑', callback_data='cpanomer1.balance')],
         [dict(text='Результаты Айсены😍', callback_data='result.generate')],
         [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
         [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
@@ -123,6 +125,14 @@ def on_callback_query(msg):
                 bot.answerCallbackQuery(query_id, 'OK')
                 bot.sendMessage(from_id, 'Напиши сумму🤑')
                 query[from_id].append('joycasino_amount')
+
+        elif data[0] == 'cpanomer1':
+        	if data[1] == 'balance':
+        		balance = cpa.get_balance()
+        		bot.answerCallbackQuery(query_id, 'OK')
+        		bot.sendMessage(from_id, '*Холд:*\nRUB {0}\nUSD {1}\n*Баланс:*\nRUB {2}\nUSD {3}'.format(
+        		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD']), parse_mode='Markdown')
+        		adminka(from_id)
 
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
