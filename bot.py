@@ -130,7 +130,7 @@ def on_callback_query(msg):
         	if data[1] == 'balance':
         		balance = cpa.get_balance()
         		bot.answerCallbackQuery(query_id, 'OK')
-        		bot.sendMessage(from_id, '*Холд:*\nRUB {0}р.\nUSD {1}$\n*Баланс:*\nRUB {2}р.\nUSD {3}$\n_В общем за сегодня депов_ *{4}* _заработано_ *{5} р.*'.format(
+        		bot.sendMessage(from_id, '*Холд:*\nRUB {0}р.\nUSD {1}$\n*Баланс:*\nRUB {2}р.\nUSD {3}$\n\n_В общем за сегодня депов_ *{4}* _заработано_ *{5} р.*'.format(
         		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD'], balance['За сегодня']['Депов'], balance['За сегодня']['Заработано']), parse_mode='Markdown')
         		adminka(from_id)
 
