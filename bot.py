@@ -45,7 +45,7 @@ def on_chat_message(msg):
     if content_type == 'text':
         if msg['text'] == '/start':
             if 'logged' not in query[chat_id]:
-                if chat_id in ADMINS:
+                if chat_id in ADMINS or chat_id in CPA:
                     adminka(chat_id)
                 else:
                     bot.sendMessage(chat_id, '**Пожалуйста введите пароль**🔐', parse_mode='Markdown')
