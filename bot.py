@@ -119,7 +119,7 @@ def on_callback_query(msg):
                 bot.sendMessage(from_id, 'Ты должен мне прислать примерно вот такое изображение с подписью!')
                 bot.sendPhoto(from_id, 'https://i1.sndcdn.com/avatars-000338809424-572092-t500x500.jpg', caption='Сикснайн.69.1000.100000')
                 bot.sendMessage(from_id, 'Тогда ты получишь такую штуку👇')
-                bot.sendPhoto(from_id, 'AgADAgAD1qoxG8zHoUhT7UKEyRdyKoOBCA4ABKbxp6mlejJiP7gBAAEC')
+                bot.sendPhoto(from_id, 'AgADAgADJ60xG2I9AUqlBga1wIXb8EY7hA8ABAEAAwIAA3kAA9_AAwABFgQ')
 
         elif data[0] == 'sberbank':
             if data[1] == 'generate':
