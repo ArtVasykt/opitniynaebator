@@ -155,6 +155,12 @@ def pass_update():
     webhook.feed(request.data)
     return 'OK'
 
+@app.route('/message', methods=['GET'])
+def pass_message():
+	for admin in ADMINS:
+		bot.sendMessage(admin, request.args.get('message'))
+	return 'OK'
+
 @app.route('/conversion', methods=['GET'])
 def conversion():
 	print(request.args)
