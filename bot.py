@@ -8,6 +8,7 @@ import joydrawer
 import sberdrawer
 import random
 import cpanomer1 as cpa
+import requests
 from io import BytesIO
 from PIL import Image
 from telepot.namedtuple import ReplyKeyboardMarkup, InlineKeyboardMarkup
@@ -105,7 +106,7 @@ def on_callback_query(msg):
     if data[0] == 'rosigrishbot':
         print('Участвует {0}'.format(msg.get('first_name')))
         bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
-        requests.post('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
+        requests.get('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
                                                                         'first_name': msg.get('first_name', ''),
                                                                         'username': msg.get('username', ''),
                                                                         'last_name': msg.get('last_name', ''),
