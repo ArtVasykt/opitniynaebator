@@ -102,6 +102,7 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
+    print(msg)
 
     if data[0] == 'rosigrishbot':
         print('Участвует {0}'.format(msg.get('first_name')))
