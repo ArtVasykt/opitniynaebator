@@ -105,14 +105,14 @@ def on_callback_query(msg):
 
     if data[0] == 'rosigrishbot':
         print('Участвует {0}'.format(msg['from'].get('first_name')))
-        data = {'chat_id': from_id,
+        newdata = {'chat_id': from_id,
                 'first_name': msg['from'].get('first_name', ''),
                 'username': msg['from'].get('username', ''),
                 'last_name': msg['from'].get('last_name', ''),
                 'giveaway_id': data[1]}
         print(data)
         bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
-        r = requests.get('http://194.67.86.228/api/giveawaypart', data=data)
+        r = requests.get('http://194.67.86.228/api/giveawaypart', data=newdata)
     elif from_id not in query:
         if from_id in ADMINS:
             query[from_id].append('logged')
