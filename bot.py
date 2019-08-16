@@ -102,16 +102,17 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
-    print(msg)
 
     if data[0] == 'rosigrishbot':
-        print('Участвует {0}'.format(msg.get('first_name')))
+        print('Участвует {0}'.format(msg['from'].get('first_name')))
+        data = {'chat_id': from_id,
+                'first_name': msg['from'].get('first_name', ''),
+                'username': msg['from'].get('username', ''),
+                'last_name': msg['from'].get('last_name', ''),
+                'giveaway_id': int(data[1])}
+        print(data)
         bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
-        requests.get('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
-                                                                        'first_name': msg['from'].get('first_name', ''),
-                                                                        'username': msg['from'].get('username', ''),
-                                                                        'last_name': msg['from'].get('last_name', ''),
-                                                                        'giveaway_id': int(data[1])})
+        requests.get('http://194.67.86.228/api/giveawaypart/', data=data)
     elif from_id not in query:
         if from_id in ADMINS:
             query[from_id].append('logged')
