@@ -143,6 +143,7 @@ def on_callback_query(msg):
 
         elif data[0] == 'rosigrishbot':
             print('Участвует {0}'.format(msg.get('first_name')))
+            bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
             requests.post('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
                                                                             'first_name': msg.get('first_name', ''),
                                                                             'username': msg.get('username', ''),
