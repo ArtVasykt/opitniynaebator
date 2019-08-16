@@ -101,7 +101,16 @@ def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
     print('Callback query:', query_id, from_id, data)
     data = data.split('.')
-    if from_id not in query:
+
+    if data[0] == 'rosigrishbot':
+        print('Участвует {0}'.format(msg.get('first_name')))
+        bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
+        requests.post('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
+                                                                        'first_name': msg.get('first_name', ''),
+                                                                        'username': msg.get('username', ''),
+                                                                        'last_name': msg.get('last_name', ''),
+                                                                        'giveaway_id': int(data[1])})
+    elif from_id not in query:
         if from_id in ADMINS:
             query[from_id].append('logged')
         else:
@@ -140,15 +149,6 @@ def on_callback_query(msg):
         		bot.sendMessage(from_id, '*Холд:*\nRUB {0}р.\nUSD {1}$\n*Баланс:*\nRUB {2}р.\nUSD {3}$\n\n_В общем за сегодня депов_ *{4}* _заработано_ *{5} р.*'.format(
         		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD'], balance['За сегодня']['Депов'], balance['За сегодня']['Заработано']), parse_mode='Markdown')
         		adminka(from_id)
-
-        elif data[0] == 'rosigrishbot':
-            print('Участвует {0}'.format(msg.get('first_name')))
-            bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
-            requests.post('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
-                                                                            'first_name': msg.get('first_name', ''),
-                                                                            'username': msg.get('username', ''),
-                                                                            'last_name': msg.get('last_name', ''),
-                                                                            'giveaway_id': int(data[1])})
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
