@@ -108,9 +108,9 @@ def on_callback_query(msg):
         print('Участвует {0}'.format(msg.get('first_name')))
         bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
         requests.get('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
-                                                                        'first_name': msg.get('first_name', ''),
-                                                                        'username': msg.get('username', ''),
-                                                                        'last_name': msg.get('last_name', ''),
+                                                                        'first_name': msg['from'].get('first_name', ''),
+                                                                        'username': msg['from'].get('username', ''),
+                                                                        'last_name': msg['from'].get('last_name', ''),
                                                                         'giveaway_id': int(data[1])})
     elif from_id not in query:
         if from_id in ADMINS:
