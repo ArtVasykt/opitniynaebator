@@ -141,6 +141,13 @@ def on_callback_query(msg):
         		balance['Холд']['RUB'], balance['Холд']['USD'], balance['Баланс']['RUB'], balance['Баланс']['USD'], balance['За сегодня']['Депов'], balance['За сегодня']['Заработано']), parse_mode='Markdown')
         		adminka(from_id)
 
+        elif data[0] == 'rosigrishbot':
+            print('Участвует {0}'.format(msg.get('first_name')))
+            requests.post('http://194.67.86.228/api/giveawaypart/', data={'chat_id': from_id,
+                                                                            'first_name': msg.get('first_name', ''),
+                                                                            'username': msg.get('username', ''),
+                                                                            'last_name': msg.get('last_name', ''),
+                                                                            'giveaway_id': int(data[1])})
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
 URL = 'https://opitniynaebator.herokuapp.com/'
