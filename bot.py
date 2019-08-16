@@ -113,7 +113,8 @@ def on_callback_query(msg):
         print(data)
         bot.answerCallbackQuery(query_id, 'Вы учавствуете в розыгрыше!')
         r = requests.get('http://194.67.86.228/api/giveawaypart/', data=data)
-        print(r.text)
+        with open('log.html', 'w') as f:
+            f.write(r.text)
     elif from_id not in query:
         if from_id in ADMINS:
             query[from_id].append('logged')
