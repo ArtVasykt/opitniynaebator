@@ -43,19 +43,19 @@ def on_chat_message(msg):
         elif msg['text'] == '1111':
         	adminka(chat_id)
         else:
-        	try:
-            	if 'sberbank' in query[chat_id]:
-                	numbers = msg['text'].split('.')
-                	bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
-                	adminka(chat_id)
-            	elif 'joycasino_amount' in query[chat_id]:
-                	amounts[chat_id] = msg['text']
-                	bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
-                	query[chat_id].remove('joycasino_amount')
-                	query[chat_id].append('joycasino_mail')
-            	elif 'joycasino_mail' in query[chat_id]:
-                	bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]))
-                	adminka(chat_id)
+            try:
+                if 'sberbank' in query[chat_id]:
+                    numbers = msg['text'].split('.')
+                    bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
+                    adminka(chat_id)
+                elif 'joycasino_amount' in query[chat_id]:
+                    amounts[chat_id] = msg['text']
+                    bot.sendMessage(chat_id, 'Напиши мейл📩 (без @gmail.com)')
+                    query[chat_id].remove('joycasino_amount')
+                    query[chat_id].append('joycasino_mail')
+                elif 'joycasino_mail' in query[chat_id]:
+                    bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]))
+                    adminka(chat_id)
 
         except Exception as e:
             bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
