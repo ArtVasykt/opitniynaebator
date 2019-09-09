@@ -3,11 +3,9 @@ import os
 from flask import Flask, request
 import telepot
 from telepot.loop import OrderedWebhook
-import result_drawer
 import joydrawer
 import sberdrawer
 import random
-import cpanomer1 as cpa
 import requests
 from io import BytesIO
 from PIL import Image
@@ -75,11 +73,11 @@ def on_callback_query(msg):
             bot.sendMessage(from_id, '''Кароч напиши *сколько* ты ему "перевел"💵\n\n
             И его(её) *карту* (16 цифр)💳\n\n*ЧЕРЕЗ ТОЧКУ*.\n\nПример: 10000.4276656589765432''', parse_mode='Markdown')
         
-        elif data[0] == 'joycasino':
-            if data[1] == 'generate':
-                bot.answerCallbackQuery(query_id, 'OK')
-                bot.sendMessage(from_id, 'Напиши сумму🤑')
-                query[from_id].append('joycasino_amount')
+    elif data[0] == 'joycasino':
+        if data[1] == 'generate':
+            bot.answerCallbackQuery(query_id, 'OK')
+            bot.sendMessage(from_id, 'Напиши сумму🤑')
+            query[from_id].append('joycasino_amount')
 
 
 TOKEN = '860594921:AAG1GHkdaJU0JFlExy-6CNJUSeeIYcyTo4c'
