@@ -37,7 +37,7 @@ def on_chat_message(msg):
 
     if content_type == 'text':
         if msg['text'] == '/start':
-            if chat_id in ADMINS
+            if chat_id in ADMINS:
                 adminka(chat_id)
             else:
                 bot.sendMessage(chat_id, '*Вам нужно получить доступ от разработчика бота, напиши @ghjkluiopp*🔐',
