@@ -4,8 +4,8 @@ from pytz import timezone
 from bs4 import BeautifulSoup
 
 url = 'http://my.cpanomer1.ru/'
-login = 'kolyap2000@gmail.com'
-password = 'pasha_lox'
+login = 'amgeow@gmail.com'
+password = 'amantemidze2211'
 
 def connect():
 	s = requests.Session()

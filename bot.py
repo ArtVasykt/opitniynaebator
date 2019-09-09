@@ -22,20 +22,17 @@ amounts = {}
 query = {}
 WATERMARK_MODE = True
 PASSWORD = 'артем крутой'
-ADMINS = [474504117, 551475668, 660163008, 866346596, 400885030, 804792225]
+ADMINS = [474504117, 551475668, 660163008, 866346596, 400885030, 804792225, 408801179]
 CPA = [680497281, 671781357]
 
 def adminka(chat_id):
     query[chat_id] = ['logged']
     if chat_id in ADMINS:
     	bot.sendMessage(chat_id, 'Чего хочешь господин)💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-    		[dict(text='Баланс CPA#1💵', callback_data='cpanomer1.balance')],
-        	[dict(text='Результаты Айсены😍', callback_data='result.generate')],
         	[dict(text='Сбербанк💳', callback_data='sberbank.generate')],
         	[dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
     elif chat_id in CPA:
     	bot.sendMessage(chat_id, 'Привет CPA#1💻', reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-        	[dict(text='Результаты Айсены😍', callback_data='result.generate')],
         	[dict(text='Сбербанк💳', callback_data='sberbank.generate')],
         	[dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
 
@@ -81,22 +78,6 @@ def on_chat_message(msg):
 
             except Exception as e:
                 bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
-
-    if content_type == 'photo':
-        if 'result' in query[chat_id]:
-            try:
-                char = msg['caption'].split('.')
-                file = BytesIO()
-                bot.download_file(msg['photo'][-1]['file_id'], file)
-                file.seek(0)
-                face = Image.open(file)
-                result = result_drawer.draw(face, char[0], char[1], char[2], char[3])
-                bot.sendPhoto(chat_id, result)
-            except KeyError:
-                bot.sendMessage(chat_id, "🚫Ты не добавил описания (т.е. подписи к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
-            except IndexError:
-                bot.sendMessage(chat_id, "🚫Неправильное описание (т.е. подпись к фото)\n**Пример подписи:**\nНиколай Николаев.18.750.26590\n**То есть:**\nИмя.Возраст.Старт.Прибыль\n\n**Все через точку**", parse_mode='Markdown')
-
 
 def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
