@@ -57,8 +57,8 @@ def on_chat_message(msg):
                     bot.sendPhoto(chat_id, joydrawer.draw(msg['text'], amounts[chat_id]))
                     adminka(chat_id)
 
-        except Exception as e:
-            bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
+            except Exception as e:
+                bot.sendMessage(chat_id, '🚫🚫🚫\nОшибка: ' + str(e))
 
 def on_callback_query(msg):
     query_id, from_id, data = telepot.glance(msg, flavor='callback_query')
