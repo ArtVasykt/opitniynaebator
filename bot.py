@@ -44,7 +44,7 @@ def on_chat_message(msg):
                 parse_mode='Markdown')
 
         try:
-            elif 'sberbank' in query[chat_id]:
+            if 'sberbank' in query[chat_id]:
                 numbers = msg['text'].split('.')
                 bot.sendPhoto(chat_id, sberdrawer.draw(numbers[0], numbers[1]))
                 adminka(chat_id)
