@@ -21,12 +21,11 @@ query = {}
 ADMINS = [474504117, 551475668, 680497281, 671781357, 660163008, 866346596, 400885030, 804792225, 408801179]
 
 def adminka(chat_id):
-    if chat_id in ADMINS:
-    	bot.sendMessage(chat_id, 'Если есть какая-нибудь идея *обязательно* напиши @ghjkluiopp (серьезно) 💻',
-    		parse_mode='Markdown',
-    		reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-        	[dict(text='Сбербанк💳', callback_data='sberbank.generate')],
-        	[dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
+    bot.sendMessage(chat_id, 'Если есть какая-нибудь идея *обязательно* напиши @ghjkluiopp (серьезно) 💻',
+    	parse_mode='Markdown',
+    	reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        [dict(text='Сбербанк💳', callback_data='sberbank.generate')],
+        [dict(text='JOYCASINO Баланс🤑', callback_data='joycasino.generate')]]))
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
